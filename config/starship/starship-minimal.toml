@@ -7,12 +7,13 @@ format = """
 [](surface0)\
 $os\
 $username\
+[](fg:surface0)\
 $hostname\
 $directory\
 $git_branch\
 $git_status\
 $c\
-
+$cpp\
 $cmake\
 $golang\
 $java\
@@ -61,7 +62,6 @@ crust = "#11111b"
 
 [os]
 disabled = false
-style = "bold blue"
 format = '[$symbol]($style)'
 
 [os.symbols]
@@ -111,6 +111,53 @@ Unknown = " "
 Void = " "
 Windows = "󰍲 "
 
+[os.style]
+Alpaquita = "bg:surface0 fg:blue"
+Alpine = "bg:surface0 fg:blue"
+AlmaLinux = "bg:surface0 fg:mauve"
+Amazon = "bg:surface0 fg:yellow"
+Android = "bg:surface0 fg:green"
+Arch = "bg:surface0 fg:blue"
+Artix = "bg:surface0 fg:blue"
+CachyOS = "bg:surface0 fg:blue"
+CentOS = "bg:surface0 fg:mauve"
+Debian = "bg:surface0 fg:red"
+DragonFly = "bg:surface0 fg:red"
+Emscripten = "bg:surface0 fg:mauve"
+EndeavourOS = "bg:surface0 fg:mauve"
+Fedora = "bg:surface0 fg:blue"
+FreeBSD = "bg:surface0 fg:red"
+Garuda = "bg:surface0 fg:blue"
+Gentoo = "bg:surface0 fg:mauve"
+HardenedBSD = "bg:surface0 fg:red"
+Illumos = "bg:surface0 fg:red"
+Kali = "bg:surface0 fg:blue"
+Linux = "bg:surface0 fg:yellow"
+Mabox = "bg:surface0 fg:blue"
+Macos = "bg:surface0 fg:text"
+Manjaro = "bg:surface0 fg:green"
+Mariner = "bg:surface0 fg:blue"
+MidnightBSD = "bg:surface0 fg:blue"
+Mint = "bg:surface0 fg:green"
+NetBSD = "bg:surface0 fg:peach"
+NixOS = "bg:surface0 fg:blue"
+Nobara = "bg:surface0 fg:blue"
+OpenBSD = "bg:surface0 fg:yellow"
+openSUSE = "bg:surface0 fg:green"
+OracleLinux = "bg:surface0 fg:red"
+Pop = "bg:surface0 fg:teal"
+Raspbian = "bg:surface0 fg:red"
+Redhat = "bg:surface0 fg:red"
+RedHatEnterprise = "bg:surface0 fg:red"
+RockyLinux = "bg:surface0 fg:green"
+Redox = "bg:surface0 fg:red"
+Solus = "bg:surface0 fg:blue"
+SUSE = "bg:surface0 fg:green"
+Ubuntu = "bg:surface0 fg:peach"
+Unknown = "bg:surface0 fg:text"
+Void = "bg:surface0 fg:green"
+Windows = "bg:surface0 fg:blue"
+
 [username]
 show_always = true
 style_user = "bg:surface0 fg:text"
@@ -155,7 +202,12 @@ deleted = "✘"
 tag_symbol = '  '
 
 [c]
-symbol = " "
+symbol = " "
+style = "bold teal"
+format = '[$symbol($version)]($style) '
+
+[cpp]
+symbol = " "
 style = "bold teal"
 format = '[$symbol($version)]($style) '
 
@@ -225,6 +277,12 @@ symbol = " "
 style = "bold blue"
 format = '[$symbol$context]($style) '
 only_with_files = true
+
+[kubernetes]
+symbol = "󱃾"
+style = "bg:blue"
+format = '[[ $symbol( $context) ](fg:base bg:blue)]($style)'
+disabled = true
 
 [cmd_duration]
 min_time = 2000
