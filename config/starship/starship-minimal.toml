@@ -112,9 +112,9 @@ Windows = "󰍲 "
 
 [username]
 show_always = true
-style_user = "bold peach"
-style_root = "bold red"
-format = '[$user]($style) '
+style_user = "bg:surface0 fg:text"
+style_root = "bg:surface0 fg:red bold"
+format = '[ $user ]($style)'
 
 [hostname]
 ssh_only = true
