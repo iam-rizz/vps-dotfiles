@@ -158,13 +158,13 @@ dotfiles_backup() {
 # Utility Functions
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# Quick find
-ff() {
+# Quick find file
+qf() {
     find . -type f -name "*$1*"
 }
 
 # Quick find directory
-fd() {
+qd() {
     find . -type d -name "*$1*"
 }
 
