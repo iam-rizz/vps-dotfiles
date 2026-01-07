@@ -1,5 +1,7 @@
-# starship-minimal.toml - Minimal Prompt (Text Colors Only)
+# starship-minimal.toml - Minimal Prompt with Nerd Font Icons
 # VPS Dotfiles - Catppuccin Mocha Theme
+
+"$schema" = 'https://starship.rs/config-schema.json'
 
 format = """
 $os\
@@ -8,13 +10,19 @@ $hostname\
 $directory\
 $git_branch\
 $git_status\
-$nodejs\
-$python\
-$rust\
+$c\
+$cmake\
 $golang\
 $java\
+$kotlin\
+$lua\
+$nodejs\
 $php\
+$python\
 $ruby\
+$rust\
+$swift\
+$zig\
 $docker_context\
 $cmd_duration\
 $line_break$character"""
@@ -55,7 +63,9 @@ style = "bold blue"
 format = '[$symbol]($style)'
 
 [os.symbols]
+Alpaquita = " "
 Alpine = " "
+AlmaLinux = " "
 Amazon = " "
 Android = " "
 Arch = " "
@@ -69,7 +79,7 @@ Macos = " "
 Manjaro = " "
 Mint = " "
 NixOS = " "
-OpenBSD = " "
+OpenBSD = "󰈺 "
 openSUSE = " "
 Pop = " "
 Raspbian = " "
@@ -78,7 +88,7 @@ RedHatEnterprise = " "
 RockyLinux = " "
 Ubuntu = " "
 Unknown = " "
-Windows = " "
+Windows = "󰍲 "
 
 [username]
 show_always = true
@@ -88,6 +98,7 @@ format = '[$user]($style) '
 
 [hostname]
 ssh_only = true
+ssh_symbol = " "
 style = "bold flamingo"
 format = '[@$hostname]($style) '
 
@@ -118,41 +129,71 @@ staged = "+"
 renamed = "»"
 deleted = "✘"
 
-[nodejs]
+[c]
 symbol = " "
 style = "bold teal"
-format = '[$symbol$version]($style) '
-detect_files = ["package.json", ".node-version", ".nvmrc"]
+format = '[$symbol($version)]($style) '
 
-[python]
+[cmake]
 symbol = " "
 style = "bold teal"
-format = '[$symbol$version(\($virtualenv\))]($style) '
-
-[rust]
-symbol = " "
-style = "bold teal"
-format = '[$symbol$version]($style) '
+format = '[$symbol($version)]($style) '
 
 [golang]
 symbol = " "
 style = "bold teal"
-format = '[$symbol$version]($style) '
+format = '[$symbol($version)]($style) '
 
 [java]
 symbol = " "
 style = "bold teal"
-format = '[$symbol$version]($style) '
+format = '[$symbol($version)]($style) '
+
+[kotlin]
+symbol = " "
+style = "bold teal"
+format = '[$symbol($version)]($style) '
+
+[lua]
+symbol = " "
+style = "bold teal"
+format = '[$symbol($version)]($style) '
+
+[nodejs]
+symbol = " "
+style = "bold teal"
+format = '[$symbol($version)]($style) '
+detect_files = ["package.json", ".node-version", ".nvmrc"]
 
 [php]
 symbol = " "
 style = "bold teal"
-format = '[$symbol$version]($style) '
+format = '[$symbol($version)]($style) '
+
+[python]
+symbol = " "
+style = "bold teal"
+format = '[$symbol($version)(\($virtualenv\))]($style) '
 
 [ruby]
 symbol = " "
 style = "bold teal"
-format = '[$symbol$version]($style) '
+format = '[$symbol($version)]($style) '
+
+[rust]
+symbol = "󱘗 "
+style = "bold teal"
+format = '[$symbol($version)]($style) '
+
+[swift]
+symbol = " "
+style = "bold teal"
+format = '[$symbol($version)]($style) '
+
+[zig]
+symbol = " "
+style = "bold teal"
+format = '[$symbol($version)]($style) '
 
 [docker_context]
 symbol = " "
