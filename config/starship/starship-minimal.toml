@@ -13,7 +13,6 @@ $directory\
 $git_branch\
 $git_status\
 $c\
-$cpp\
 $cmake\
 $golang\
 $java\
@@ -62,7 +61,6 @@ crust = "#11111b"
 
 [os]
 disabled = false
-format = '[$symbol]($style)'
 style = "bg:surface0 fg:red"
 
 [os.symbols]
@@ -156,11 +154,6 @@ deleted = "✘"
 tag_symbol = '  '
 
 [c]
-symbol = " "
-style = "bold teal"
-format = '[$symbol($version)]($style) '
-
-[cpp]
 symbol = " "
 style = "bold teal"
 format = '[$symbol($version)]($style) '

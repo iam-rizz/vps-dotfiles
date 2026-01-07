@@ -15,7 +15,6 @@ $git_branch\
 $git_status\
 [](fg:green bg:teal)\
 $c\
-$cpp\
 $golang\
 $java\
 $kotlin\
@@ -181,11 +180,6 @@ tag_symbol = '  '
 
 [c]
 symbol = " "
-style = "bg:teal"
-format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
-
-[cpp]
-symbol = " "
 style = "bg:teal"
 format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
