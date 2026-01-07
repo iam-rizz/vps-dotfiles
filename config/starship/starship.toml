@@ -4,6 +4,9 @@
 
 "$schema" = 'https://starship.rs/config-schema.json'
 
+# Increase command timeout to prevent git timeout warnings
+command_timeout = 1000
+
 format = """
 [](surface0)\
 $username\

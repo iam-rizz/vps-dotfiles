@@ -10,7 +10,7 @@ Inspired by [caelestia-dots](https://github.com/caelestia-dots) and [JaKooLit Hy
 - **[Starship](https://starship.rs/)** cross-shell prompt with Catppuccin Mocha theme
   - Bold/Box mode with background colors
   - Minimal mode with text colors only
-  - Nerd Font symbols support
+  - Nerd Font symbols support (requires Nerd Font installation)
 - **[btop](https://github.com/aristocratos/btop)** system monitor with Catppuccin theme
 - **[fastfetch](https://github.com/fastfetch-cli/fastfetch)** system info display
   - Compact config for login
@@ -19,6 +19,28 @@ Inspired by [caelestia-dots](https://github.com/caelestia-dots) and [JaKooLit Hy
 - **tmux** with sensible keybindings
 - **Catppuccin Mocha** color scheme across all tools
 - Security-focused with history filtering and secure permissions
+
+## Requirements
+
+**Important**: This dotfiles setup uses Nerd Font symbols extensively. You must install a Nerd Font and configure your terminal to use it.
+
+**Recommended Font**: [Fira Code Nerd Font](https://www.nerdfonts.com/font-downloads)
+
+### Installing Nerd Font
+
+**On Linux:**
+```bash
+# Download and install Fira Code Nerd Font
+mkdir -p ~/.local/share/fonts
+cd ~/.local/share/fonts
+curl -fLo "Fira Code Regular Nerd Font Complete.ttf" \
+  https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/FiraCode/Regular/FiraCodeNerdFont-Regular.ttf
+fc-cache -fv
+```
+
+**Then configure your terminal emulator to use "FiraCode Nerd Font" or "FiraCode NF".**
+
+Without a Nerd Font, icons will appear as boxes or question marks.
 
 ## Structure
 
@@ -67,6 +89,9 @@ Options:
 - zsh
 - git
 - curl
+- **Nerd Font** (recommended: [Fira Code Nerd Font](https://www.nerdfonts.com/font-downloads))
+  - Required for proper icon display in Starship prompt
+  - Install and configure in your terminal emulator
 
 ### Optional (Recommended)
 - starship - Cross-shell prompt
