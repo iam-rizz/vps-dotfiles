@@ -1,0 +1,465 @@
+#!/usr/bin/env bash
+#
+# VPS Dotfiles Install Script
+# Inspired by caelestia-dots and JaKooLit Hyprland-Dots
+#
+
+set -e
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+PURPLE='\033[0;35m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+# Script directory
+DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BACKUP_DIR="$HOME/.dotfiles-backup-$(date +%Y%m%d-%H%M%S)"
+STATE_FILE="$DOTFILES_DIR/.state"
+
+# Core dependencies (required)
+CORE_DEPS=(
+    "zsh"
+    "git"
+    "curl"
+    "wget"
+)
+
+# Optional tools
+OPTIONAL_DEPS=(
+    "starship"
+    "btop"
+    "fastfetch"
+    "lsd"
+    "bat"
+    "fzf"
+    "ripgrep"
+    "fd-find"
+    "tmux"
+    "neovim"
+    "htop"
+)
+
+# Print functions
+print_header() {
+    echo -e "\n${PURPLE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${CYAN}  $1${NC}"
+    echo -e "${PURPLE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}\n"
+}
+
+print_success() { echo -e "${GREEN}✓${NC} $1"; }
+print_error() { echo -e "${RED}✗${NC} $1"; }
+print_warning() { echo -e "${YELLOW}!${NC} $1"; }
+print_info() { echo -e "${BLUE}→${NC} $1"; }
+
+# Detect distribution
+detect_distro() {
+    if [ -f /etc/os-release ]; then
+        . /etc/os-release
+        DISTRO=$ID
+        DISTRO_LIKE=$ID_LIKE
+    elif [ -f /etc/debian_version ]; then
+        DISTRO="debian"
+    elif [ -f /etc/redhat-release ]; then
+        DISTRO="rhel"
+    elif [ -f /etc/arch-release ]; then
+        DISTRO="arch"
+    else
+        DISTRO="unknown"
+    fi
+    echo "$DISTRO"
+}
+
+# Get package manager
+get_pkg_manager() {
+    local distro=$(detect_distro)
+    case "$distro" in
+        ubuntu|debian|linuxmint|pop)
+            echo "apt"
+            ;;
+        fedora|rhel|centos|rocky|almalinux)
+            echo "dnf"
+            ;;
+        arch|manjaro|endeavouros)
+            echo "pacman"
+            ;;
+        opensuse*)
+            echo "zypper"
+            ;;
+        *)
+            # Check for package managers directly
+            if command -v apt &> /dev/null; then
+                echo "apt"
+            elif command -v dnf &> /dev/null; then
+                echo "dnf"
+            elif command -v pacman &> /dev/null; then
+                echo "pacman"
+            else
+                echo "unknown"
+            fi
+            ;;
+    esac
+}
+
+
+# Install package based on distro
+install_pkg() {
+    local pkg=$1
+    local pkg_manager=$(get_pkg_manager)
+    
+    case "$pkg_manager" in
+        apt)
+            sudo apt install -y "$pkg" 2>/dev/null || return 1
+            ;;
+        dnf)
+            sudo dnf install -y "$pkg" 2>/dev/null || return 1
+            ;;
+        pacman)
+            sudo pacman -S --noconfirm "$pkg" 2>/dev/null || return 1
+            ;;
+        zypper)
+            sudo zypper install -y "$pkg" 2>/dev/null || return 1
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+}
+
+# Check if command exists
+cmd_exists() {
+    command -v "$1" &> /dev/null
+}
+
+# Install core dependencies
+install_core_deps() {
+    print_header "Installing Core Dependencies"
+    
+    local pkg_manager=$(get_pkg_manager)
+    print_info "Detected package manager: $pkg_manager"
+    
+    # Update package lists
+    case "$pkg_manager" in
+        apt)
+            print_info "Updating package lists..."
+            sudo apt update -qq
+            ;;
+        dnf)
+            print_info "Updating package lists..."
+            sudo dnf check-update -q || true
+            ;;
+    esac
+    
+    for dep in "${CORE_DEPS[@]}"; do
+        if cmd_exists "$dep"; then
+            print_success "$dep is already installed"
+        else
+            print_info "Installing $dep..."
+            if install_pkg "$dep"; then
+                print_success "$dep installed successfully"
+            else
+                print_error "Failed to install $dep"
+            fi
+        fi
+    done
+}
+
+# Install optional tools
+install_optional_deps() {
+    print_header "Installing Optional Tools"
+    
+    local pkg_manager=$(get_pkg_manager)
+    
+    # Package name mappings for different distros
+    declare -A pkg_names_apt=(
+        ["bat"]="bat"
+        ["fd-find"]="fd-find"
+        ["ripgrep"]="ripgrep"
+        ["neovim"]="neovim"
+        ["lsd"]="lsd"
+    )
+    
+    declare -A pkg_names_dnf=(
+        ["bat"]="bat"
+        ["fd-find"]="fd-find"
+        ["ripgrep"]="ripgrep"
+        ["neovim"]="neovim"
+        ["lsd"]="lsd"
+    )
+    
+    declare -A pkg_names_pacman=(
+        ["bat"]="bat"
+        ["fd-find"]="fd"
+        ["ripgrep"]="ripgrep"
+        ["neovim"]="neovim"
+        ["lsd"]="lsd"
+    )
+    
+    for dep in "${OPTIONAL_DEPS[@]}"; do
+        local pkg_name="$dep"
+        
+        # Get distro-specific package name
+        case "$pkg_manager" in
+            apt)
+                [[ -n "${pkg_names_apt[$dep]}" ]] && pkg_name="${pkg_names_apt[$dep]}"
+                ;;
+            dnf)
+                [[ -n "${pkg_names_dnf[$dep]}" ]] && pkg_name="${pkg_names_dnf[$dep]}"
+                ;;
+            pacman)
+                [[ -n "${pkg_names_pacman[$dep]}" ]] && pkg_name="${pkg_names_pacman[$dep]}"
+                ;;
+        esac
+        
+        # Check if already installed (check both original name and mapped name)
+        if cmd_exists "$dep" || cmd_exists "$pkg_name"; then
+            print_success "$dep is already installed"
+        else
+            print_info "Installing $dep ($pkg_name)..."
+            if install_pkg "$pkg_name"; then
+                print_success "$dep installed successfully"
+            else
+                print_warning "Could not install $dep from package manager"
+            fi
+        fi
+    done
+    
+    # Install starship if not present
+    if ! cmd_exists starship; then
+        print_info "Installing starship via official installer..."
+        curl -sS https://starship.rs/install.sh | sh -s -- -y
+        print_success "Starship installed"
+    fi
+}
+
+# Backup existing configs
+backup_configs() {
+    print_header "Backing Up Existing Configurations"
+    
+    local files_to_backup=(
+        "$HOME/.zshrc"
+        "$HOME/.zshenv"
+        "$HOME/.bashrc"
+        "$HOME/.bash_aliases"
+        "$HOME/.tmux.conf"
+        "$HOME/.gitconfig"
+        "$HOME/.config/starship.toml"
+        "$HOME/.config/btop/btop.conf"
+        "$HOME/.config/fastfetch/config.jsonc"
+        "$HOME/.config/nvim/init.lua"
+    )
+    
+    local backed_up=0
+    
+    for file in "${files_to_backup[@]}"; do
+        if [ -f "$file" ] || [ -L "$file" ]; then
+            mkdir -p "$BACKUP_DIR/$(dirname "${file#$HOME/}")"
+            cp -P "$file" "$BACKUP_DIR/${file#$HOME/}" 2>/dev/null || true
+            print_info "Backed up: $file"
+            backed_up=$((backed_up + 1))
+        fi
+    done
+    
+    if [ $backed_up -gt 0 ]; then
+        print_success "Backed up $backed_up files to $BACKUP_DIR"
+    else
+        print_info "No existing configs to backup"
+    fi
+}
+
+
+# Create symlinks
+create_symlinks() {
+    print_header "Creating Symlinks"
+    
+    # Ensure config directories exist
+    mkdir -p "$HOME/.config/btop/themes"
+    mkdir -p "$HOME/.config/fastfetch"
+    mkdir -p "$HOME/.config/nvim/lua"
+    
+    # Define symlinks: source -> destination
+    declare -A symlinks=(
+        ["$DOTFILES_DIR/config/zsh/.zshrc"]="$HOME/.zshrc"
+        ["$DOTFILES_DIR/config/zsh/.zshenv"]="$HOME/.zshenv"
+        ["$DOTFILES_DIR/config/bash/.bashrc"]="$HOME/.bashrc"
+        ["$DOTFILES_DIR/config/bash/.bash_aliases"]="$HOME/.bash_aliases"
+        ["$DOTFILES_DIR/config/starship/starship.toml"]="$HOME/.config/starship.toml"
+        ["$DOTFILES_DIR/config/tmux/.tmux.conf"]="$HOME/.tmux.conf"
+        ["$DOTFILES_DIR/config/btop/btop.conf"]="$HOME/.config/btop/btop.conf"
+        ["$DOTFILES_DIR/config/fastfetch/config.jsonc"]="$HOME/.config/fastfetch/config.jsonc"
+        ["$DOTFILES_DIR/config/nvim/init.lua"]="$HOME/.config/nvim/init.lua"
+        ["$DOTFILES_DIR/config/git/.gitconfig"]="$HOME/.gitconfig"
+        ["$DOTFILES_DIR/config/git/.gitignore"]="$HOME/.gitignore_global"
+        ["$DOTFILES_DIR/themes/catppuccin/btop.theme"]="$HOME/.config/btop/themes/catppuccin_mocha.theme"
+    )
+    
+    for src in "${!symlinks[@]}"; do
+        local dest="${symlinks[$src]}"
+        
+        if [ -f "$src" ]; then
+            # Remove existing file/symlink
+            if [ -e "$dest" ] || [ -L "$dest" ]; then
+                rm -f "$dest"
+            fi
+            
+            # Create symlink
+            ln -sf "$src" "$dest"
+            print_success "Linked: $(basename "$dest")"
+        else
+            print_warning "Source not found: $src"
+        fi
+    done
+    
+    # Set secure permissions
+    chmod 600 "$HOME/.gitconfig" 2>/dev/null || true
+    chmod 700 "$HOME/.config/btop" 2>/dev/null || true
+}
+
+# Install zinit
+install_zinit() {
+    print_header "Installing Zinit Plugin Manager"
+    
+    local ZINIT_HOME="${XDG_DATA_HOME:-$HOME/.local/share}/zinit/zinit.git"
+    
+    if [ -d "$ZINIT_HOME" ]; then
+        print_success "Zinit is already installed"
+    else
+        print_info "Installing zinit..."
+        mkdir -p "$(dirname $ZINIT_HOME)"
+        git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+        print_success "Zinit installed successfully"
+    fi
+}
+
+# Set zsh as default shell
+set_default_shell() {
+    print_header "Setting Default Shell"
+    
+    if [ "$SHELL" = "$(which zsh)" ]; then
+        print_success "Zsh is already the default shell"
+    else
+        print_info "Setting zsh as default shell..."
+        if chsh -s "$(which zsh)"; then
+            print_success "Default shell changed to zsh"
+            print_warning "Please log out and log back in for changes to take effect"
+        else
+            print_error "Failed to change default shell"
+            print_info "You can manually run: chsh -s $(which zsh)"
+        fi
+    fi
+}
+
+# Save installation state
+save_state() {
+    cat > "$STATE_FILE" << EOF
+INSTALLED_COMPONENTS="zsh,tmux,nvim,git,zinit,starship,btop,fastfetch"
+BACKUP_DIR="$BACKUP_DIR"
+INSTALL_DATE="$(date +%Y-%m-%d)"
+LAST_UPDATE="$(date +%Y-%m-%d)"
+EOF
+    print_success "Installation state saved"
+}
+
+# Show usage
+show_usage() {
+    echo "Usage: $0 [options]"
+    echo ""
+    echo "Options:"
+    echo "  --all           Install all components (default)"
+    echo "  --shell         Install shell configs only"
+    echo "  --tools         Install tool configs only"
+    echo "  --no-backup     Skip backup of existing files"
+    echo "  --uninstall     Remove dotfiles and restore backups"
+    echo "  --help          Show this help message"
+}
+
+# Main installation
+main() {
+    local do_backup=true
+    local install_all=true
+    local shell_only=false
+    local tools_only=false
+    
+    # Parse arguments
+    while [[ $# -gt 0 ]]; do
+        case $1 in
+            --all)
+                install_all=true
+                shift
+                ;;
+            --shell)
+                shell_only=true
+                install_all=false
+                shift
+                ;;
+            --tools)
+                tools_only=true
+                install_all=false
+                shift
+                ;;
+            --no-backup)
+                do_backup=false
+                shift
+                ;;
+            --help)
+                show_usage
+                exit 0
+                ;;
+            *)
+                print_error "Unknown option: $1"
+                show_usage
+                exit 1
+                ;;
+        esac
+    done
+    
+    print_header "VPS Dotfiles Installer"
+    echo -e "${CYAN}Inspired by caelestia-dots & JaKooLit Hyprland-Dots${NC}\n"
+    
+    print_info "Detected distro: $(detect_distro)"
+    print_info "Package manager: $(get_pkg_manager)"
+    
+    # Backup existing configs
+    if $do_backup; then
+        backup_configs
+    fi
+    
+    # Install dependencies
+    if $install_all || $shell_only; then
+        install_core_deps
+    fi
+    
+    if $install_all; then
+        install_optional_deps
+    fi
+    
+    # Install zinit
+    if $install_all || $shell_only; then
+        install_zinit
+    fi
+    
+    # Create symlinks
+    create_symlinks
+    
+    # Set default shell
+    if $install_all || $shell_only; then
+        set_default_shell
+    fi
+    
+    # Save state
+    save_state
+    
+    print_header "Installation Complete!"
+    echo -e "${GREEN}Your dotfiles have been installed successfully!${NC}\n"
+    echo -e "To apply changes, either:"
+    echo -e "  ${CYAN}1.${NC} Log out and log back in"
+    echo -e "  ${CYAN}2.${NC} Run: ${YELLOW}source ~/.zshrc${NC}"
+    echo ""
+    echo -e "Backup location: ${BLUE}$BACKUP_DIR${NC}"
+}
+
+# Run main
+main "$@"
