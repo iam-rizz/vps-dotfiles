@@ -2,6 +2,7 @@
 # VPS Dotfiles - Catppuccin Mocha Theme
 
 format = """
+$os\
 $username\
 $hostname\
 $directory\
@@ -47,6 +48,37 @@ surface0 = "#313244"
 base = "#1e1e2e"
 mantle = "#181825"
 crust = "#11111b"
+
+[os]
+disabled = false
+style = "bold blue"
+format = '[$symbol]($style)'
+
+[os.symbols]
+Alpine = " "
+Amazon = " "
+Android = " "
+Arch = " "
+CentOS = " "
+Debian = " "
+Fedora = " "
+FreeBSD = " "
+Gentoo = " "
+Linux = " "
+Macos = " "
+Manjaro = " "
+Mint = " "
+NixOS = " "
+OpenBSD = " "
+openSUSE = " "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Ubuntu = " "
+Unknown = " "
+Windows = " "
 
 [username]
 show_always = true
