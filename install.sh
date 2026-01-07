@@ -363,6 +363,38 @@ EOF
     print_success "Installation state saved"
 }
 
+# Disable default MOTD
+disable_default_motd() {
+    print_header "Disabling Default MOTD"
+    
+    # Backup and disable /etc/motd
+    if [ -f /etc/motd ]; then
+        sudo mv /etc/motd /etc/motd.bak 2>/dev/null || true
+        print_info "Backed up /etc/motd"
+    fi
+    
+    # Disable pam_motd on Debian/Ubuntu
+    if [ -f /etc/pam.d/sshd ]; then
+        sudo sed -i 's/^session.*pam_motd/#&/' /etc/pam.d/sshd 2>/dev/null || true
+    fi
+    if [ -f /etc/pam.d/login ]; then
+        sudo sed -i 's/^session.*pam_motd/#&/' /etc/pam.d/login 2>/dev/null || true
+    fi
+    
+    # Disable update-motd scripts (Debian/Ubuntu)
+    if [ -d /etc/update-motd.d ]; then
+        sudo chmod -x /etc/update-motd.d/* 2>/dev/null || true
+        print_info "Disabled update-motd scripts"
+    fi
+    
+    # Disable motd on RHEL/CentOS/Fedora
+    if [ -f /etc/profile.d/motd.sh ]; then
+        sudo mv /etc/profile.d/motd.sh /etc/profile.d/motd.sh.bak 2>/dev/null || true
+    fi
+    
+    print_success "Default MOTD disabled"
+}
+
 # Show usage
 show_usage() {
     echo "Usage: $0 [options]"
@@ -447,6 +479,11 @@ main() {
     # Set default shell
     if $install_all || $shell_only; then
         set_default_shell
+    fi
+    
+    # Disable default MOTD
+    if $install_all; then
+        disable_default_motd
     fi
     
     # Save state
