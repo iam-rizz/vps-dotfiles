@@ -216,11 +216,6 @@ cheat() {
 # Git Functions
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# Git commit with message
-gcmsg() {
-    git commit -m "$*"
-}
-
 # Git add and commit
 gac() {
     git add -A && git commit -m "$*"
