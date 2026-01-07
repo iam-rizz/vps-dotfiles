@@ -11,7 +11,7 @@ $directory\
 $git_branch\
 $git_status\
 $c\
-$cpp\
+
 $cmake\
 $golang\
 $java\
@@ -155,11 +155,6 @@ tag_symbol = '  '
 
 [c]
 symbol = " "
-style = "bold teal"
-format = '[$symbol($version)]($style) '
-
-[cpp]
-symbol = " "
 style = "bold teal"
 format = '[$symbol($version)]($style) '
 
