@@ -272,3 +272,67 @@ prompt_minimal() {
     export STARSHIP_CONFIG="$dotfiles_dir/config/starship/starship-minimal.toml"
     echo "Switched to minimal prompt"
 }
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Help Functions
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# List all custom aliases
+list_aliases() {
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "  Custom Aliases"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    
+    local dotfiles_dir="${DOTFILES_DIR:-$HOME/.dotfiles}"
+    
+    if [ -f "$dotfiles_dir/config/zsh/aliases.zsh" ]; then
+        echo "📝 From aliases.zsh:"
+        grep "^alias " "$dotfiles_dir/config/zsh/aliases.zsh" | sed 's/alias /  /' | sort
+    fi
+    
+    echo ""
+}
+
+# List all custom functions
+list_functions() {
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "  Custom Functions"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    
+    local dotfiles_dir="${DOTFILES_DIR:-$HOME/.dotfiles}"
+    
+    if [ -f "$dotfiles_dir/config/zsh/functions.zsh" ]; then
+        echo "🔧 Available functions:"
+        grep "^[a-zA-Z_][a-zA-Z0-9_]*() {" "$dotfiles_dir/config/zsh/functions.zsh" | \
+            sed 's/() {//' | \
+            awk '{print "  " $1}' | \
+            sort
+    fi
+    
+    echo ""
+}
+
+# Show all custom commands (aliases + functions)
+dotfiles_help() {
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "  VPS Dotfiles - Custom Commands"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo ""
+    
+    list_aliases
+    list_functions
+    
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "  Quick Commands:"
+    echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+    echo "  dotfiles_help      - Show this help"
+    echo "  list_aliases       - List all aliases"
+    echo "  list_functions     - List all functions"
+    echo "  dotfiles_update    - Update dotfiles from GitHub"
+    echo "  dotfiles_status    - Show dotfiles status"
+    echo "  prompt_bold        - Switch to bold prompt"
+    echo "  prompt_minimal     - Switch to minimal prompt"
+    echo ""
+}
