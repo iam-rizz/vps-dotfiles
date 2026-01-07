@@ -111,8 +111,8 @@ Windows = "󰍲 "
 
 [username]
 show_always = true
-style_user = "bg:surface0 fg:text"
-style_root = "bg:surface0 fg:red bold"
+style_user = "fg:text"
+style_root = "fg:red bold"
 format = '[ $user ]($style)'
 
 [hostname]
