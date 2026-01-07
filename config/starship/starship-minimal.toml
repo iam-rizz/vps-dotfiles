@@ -60,7 +60,7 @@ crust = "#11111b"
 [os]
 disabled = false
 format = '[$symbol]($style)'
-style = "bg:surface0 fg:red"
+style = "fg:red"
 
 [os.symbols]
 Alpaquita = " "
