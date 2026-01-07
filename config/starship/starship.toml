@@ -2,6 +2,8 @@
 # VPS Dotfiles - Catppuccin Mocha Theme
 # Inspired by caelestia-dots
 
+"$schema" = 'https://starship.rs/config-schema.json'
+
 format = """
 [](surface0)\
 $os\
@@ -12,13 +14,19 @@ $directory\
 $git_branch\
 $git_status\
 [](fg:green bg:teal)\
-$nodejs\
-$python\
-$rust\
+$c\
+$cpp\
 $golang\
 $java\
+$kotlin\
+$lua\
+$nodejs\
 $php\
+$python\
 $ruby\
+$rust\
+$swift\
+$zig\
 [](fg:teal bg:blue)\
 $docker_context\
 $kubernetes\
@@ -67,30 +75,55 @@ disabled = false
 style = "bg:surface0 fg:text"
 
 [os.symbols]
-Alpine = " "
-Amazon = " "
-Android = " "
-Arch = " "
-CentOS = " "
-Debian = " "
-Fedora = " "
-FreeBSD = " "
-Gentoo = " "
-Linux = " "
-Macos = " "
-Manjaro = " "
-Mint = " "
-NixOS = " "
-OpenBSD = " "
-openSUSE = " "
-Pop = " "
-Raspbian = " "
-Redhat = " "
-RedHatEnterprise = " "
-RockyLinux = " "
-Ubuntu = " "
-Unknown = " "
-Windows = " "
+Alpaquita = " "
+Alpine = " "
+AlmaLinux = " "
+Amazon = " "
+Android = " "
+AOSC = " "
+Arch = " "
+Artix = " "
+CachyOS = " "
+CentOS = " "
+Debian = " "
+DragonFly = " "
+Elementary = " "
+Emscripten = " "
+EndeavourOS = " "
+Fedora = " "
+FreeBSD = " "
+Garuda = "󰛓 "
+Gentoo = " "
+HardenedBSD = "󰞌 "
+Illumos = "󰈸 "
+Ios = "󰀷 "
+Kali = " "
+Linux = " "
+Mabox = " "
+Macos = " "
+Manjaro = " "
+Mariner = " "
+MidnightBSD = " "
+Mint = " "
+NetBSD = " "
+NixOS = " "
+Nobara = " "
+OpenBSD = "󰈺 "
+openSUSE = " "
+OracleLinux = "󰌷 "
+Pop = " "
+Raspbian = " "
+Redhat = " "
+RedHatEnterprise = " "
+RockyLinux = " "
+Redox = "󰀘 "
+Solus = "󰠳 "
+SUSE = " "
+Ubuntu = " "
+Unknown = " "
+Void = " "
+Windows = "󰍲 "
+Zorin = " "
 
 [username]
 show_always = true
@@ -100,6 +133,7 @@ format = '[ $user ]($style)'
 
 [hostname]
 ssh_only = true
+ssh_symbol = " "
 style = "bg:surface0 fg:peach"
 format = '[@$hostname ]($style)'
 disabled = false
@@ -124,7 +158,7 @@ read_only_style = "fg:red bg:peach"
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [git_branch]
-symbol = ""
+symbol = " "
 style = "bg:green"
 format = '[[ $symbol $branch ](fg:base bg:green)]($style)'
 
@@ -142,43 +176,76 @@ staged = "+"
 renamed = "»"
 deleted = "✘"
 
+[git_commit]
+tag_symbol = '  '
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Language Modules
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-[nodejs]
-symbol = ""
+[c]
+symbol = " "
 style = "bg:teal"
 format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
-detect_files = ["package.json", ".node-version", ".nvmrc"]
 
-[python]
-symbol = ""
-style = "bg:teal"
-format = '[[ $symbol( $version)( \($virtualenv\)) ](fg:base bg:teal)]($style)'
-
-[rust]
-symbol = ""
+[cpp]
+symbol = " "
 style = "bg:teal"
 format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [golang]
-symbol = ""
+symbol = " "
 style = "bg:teal"
 format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
 [java]
-symbol = ""
+symbol = " "
 style = "bg:teal"
 format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+
+[kotlin]
+symbol = " "
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+
+[lua]
+symbol = " "
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+
+[nodejs]
+symbol = " "
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+detect_files = ["package.json", ".node-version", ".nvmrc"]
 
 [php]
-symbol = ""
+symbol = " "
 style = "bg:teal"
 format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
+[python]
+symbol = " "
+style = "bg:teal"
+format = '[[ $symbol( $version)( \($virtualenv\)) ](fg:base bg:teal)]($style)'
+
 [ruby]
-symbol = ""
+symbol = " "
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+
+[rust]
+symbol = "󱘗 "
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+
+[swift]
+symbol = " "
+style = "bg:teal"
+format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
+
+[zig]
+symbol = " "
 style = "bg:teal"
 format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 
@@ -187,7 +254,7 @@ format = '[[ $symbol( $version) ](fg:base bg:teal)]($style)'
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [docker_context]
-symbol = ""
+symbol = " "
 style = "bg:blue"
 format = '[[ $symbol( $context) ](fg:base bg:blue)]($style)'
 only_with_files = true
@@ -227,9 +294,11 @@ disabled = false
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [aws]
+symbol = " "
 disabled = true
 
 [gcloud]
+symbol = " "
 disabled = true
 
 [azure]
@@ -239,4 +308,5 @@ disabled = true
 disabled = true
 
 [memory_usage]
-disabled = true
+symbol = "󰍛 "
+disabled = false
