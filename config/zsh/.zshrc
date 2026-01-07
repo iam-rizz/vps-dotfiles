@@ -114,8 +114,7 @@ fi
 # Startup
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-# Show custom MOTD on login
-if [[ -o interactive ]] && [[ -z "$MOTD_SHOWN" ]]; then
-    export MOTD_SHOWN=1
-    [[ -f "${DOTFILES_DIR:-$HOME/.dotfiles}/scripts/motd.sh" ]] && source "${DOTFILES_DIR:-$HOME/.dotfiles}/scripts/motd.sh"
+# Show system info on login
+if [[ -o interactive ]] && command -v fastfetch &> /dev/null; then
+    fastfetch
 fi

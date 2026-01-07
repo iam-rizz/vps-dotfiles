@@ -32,6 +32,7 @@ declare -A symlinks=(
     ["$DOTFILES_DIR/config/tmux/.tmux.conf"]="$HOME/.tmux.conf"
     ["$DOTFILES_DIR/config/btop/btop.conf"]="$HOME/.config/btop/btop.conf"
     ["$DOTFILES_DIR/config/fastfetch/config.jsonc"]="$HOME/.config/fastfetch/config.jsonc"
+    ["$DOTFILES_DIR/config/fastfetch/config-full.jsonc"]="$HOME/.config/fastfetch/config-full.jsonc"
     ["$DOTFILES_DIR/config/nvim/init.lua"]="$HOME/.config/nvim/init.lua"
     ["$DOTFILES_DIR/config/git/.gitconfig"]="$HOME/.gitconfig"
     ["$DOTFILES_DIR/config/git/.gitignore"]="$HOME/.gitignore_global"
