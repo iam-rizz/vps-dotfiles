@@ -254,3 +254,21 @@ drmall() {
 drmiall() {
     docker rmi $(docker images -q)
 }
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Prompt Switching Functions
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Switch to bold/box prompt
+prompt_bold() {
+    local dotfiles_dir="${DOTFILES_DIR:-$HOME/.dotfiles}"
+    export STARSHIP_CONFIG="$dotfiles_dir/config/starship/starship.toml"
+    echo "Switched to bold prompt"
+}
+
+# Switch to minimal prompt
+prompt_minimal() {
+    local dotfiles_dir="${DOTFILES_DIR:-$HOME/.dotfiles}"
+    export STARSHIP_CONFIG="$dotfiles_dir/config/starship/starship-minimal.toml"
+    echo "Switched to minimal prompt"
+}
