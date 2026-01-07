@@ -5,8 +5,8 @@
 
 format = """
 [](surface0)\
-$os\
 $username\
+$os\
 [](fg:surface0)\
 $hostname\
 $directory\
@@ -61,6 +61,7 @@ crust = "#11111b"
 
 [os]
 disabled = false
+format = '[$symbol]($style)'
 style = "bg:surface0 fg:red"
 
 [os.symbols]
