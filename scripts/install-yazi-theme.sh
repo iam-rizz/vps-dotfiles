@@ -37,36 +37,44 @@ echo -e "${BLUE}→ Cleaning up old configurations...${NC}"
 rm -rf "$YAZI_CONFIG_DIR/init.lua" 2>/dev/null || true
 rm -rf "$YAZI_CONFIG_DIR/plugins" 2>/dev/null || true
 rm -rf "$YAZI_CONFIG_DIR/flavors" 2>/dev/null || true
+rm -rf "$THEMES_DIR" 2>/dev/null || true
 
 # Create directories
 mkdir -p "$THEMES_DIR"
-mkdir -p "$YAZI_CONFIG_DIR"
 echo -e "${GREEN}✓ Created config directories${NC}"
 
-# Clone Catppuccin theme (official method: copy theme.toml directly)
+# Clone Catppuccin theme
 echo -e "${BLUE}→ Downloading Catppuccin themes...${NC}"
-cd /tmp
-rm -rf yazi-catppuccin
-git clone --quiet --depth 1 https://github.com/catppuccin/yazi.git yazi-catppuccin
+rm -rf /tmp/yazi-catppuccin
+git clone --quiet --depth 1 https://github.com/catppuccin/yazi.git /tmp/yazi-catppuccin
 
-# Copy all theme files to themes directory
+# Copy theme files from each flavor subfolder
+# Structure: themes/{flavor}/catppuccin-{flavor}-{accent}.toml
 echo -e "${BLUE}→ Installing theme files...${NC}"
-cp yazi-catppuccin/themes/catppuccin-*.toml "$THEMES_DIR/"
+for flavor in latte frappe macchiato mocha; do
+    if [ -d "/tmp/yazi-catppuccin/themes/$flavor" ]; then
+        cp /tmp/yazi-catppuccin/themes/$flavor/*.toml "$THEMES_DIR/"
+        echo -e "${GREEN}  ✓ $flavor themes installed${NC}"
+    fi
+done
 
 # Cleanup
-rm -rf yazi-catppuccin
+rm -rf /tmp/yazi-catppuccin
 
 echo -e "${GREEN}✓ Catppuccin themes installed${NC}"
 
 # Set default theme (Macchiato with mauve accent)
 echo -e "${BLUE}→ Setting default theme (Macchiato)...${NC}"
-cp "$THEMES_DIR/catppuccin-macchiato-mauve.toml" "$YAZI_CONFIG_DIR/theme.toml"
+if [ -f "$THEMES_DIR/catppuccin-macchiato-mauve.toml" ]; then
+    cp "$THEMES_DIR/catppuccin-macchiato-mauve.toml" "$YAZI_CONFIG_DIR/theme.toml"
+    echo -e "${GREEN}✓ Default theme configured${NC}"
+else
+    echo -e "${RED}✗ Default theme file not found${NC}"
+fi
 
-echo -e "${GREEN}✓ Default theme configured${NC}"
-
-# List installed themes
-echo -e "${BLUE}→ Installed themes:${NC}"
-ls "$THEMES_DIR"/*.toml 2>/dev/null | xargs -n1 basename | sed 's/^/  ✓ /' || echo "  (none found)"
+# Count installed themes
+THEME_COUNT=$(ls "$THEMES_DIR"/*.toml 2>/dev/null | wc -l)
+echo -e "${BLUE}→ Installed $THEME_COUNT theme files${NC}"
 
 echo
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
