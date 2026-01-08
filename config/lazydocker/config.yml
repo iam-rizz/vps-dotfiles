@@ -1,0 +1,123 @@
+# lazydocker config - Catppuccin Mocha Theme
+# VPS Dotfiles
+
+gui:
+  # Catppuccin Mocha theme colors
+  theme:
+    activeBorderColor:
+      - '#a6e3a1' # Green
+      - bold
+    inactiveBorderColor:
+      - '#313244' # Surface0
+    optionsTextColor:
+      - '#89b4fa' # Blue
+    selectedLineBgColor:
+      - '#313244' # Surface0
+    selectedRangeBgColor:
+      - '#313244' # Surface0
+  
+  # UI settings
+  showAllContainers: false
+  showIpc: false
+  showBottomLine: true
+  showCommandLog: false
+  showBulkCommands: true
+  
+  # Border style
+  border: rounded
+  
+  # Window size
+  windowSize: normal
+  
+  # Return to dashboard after closing a container
+  returnImmediately: false
+  
+  # Wrap text in main panel
+  wrapMainPanel: true
+  
+  # Mouse events
+  mouseEvents: true
+  
+  # Ignore mouse events
+  ignoreMouseEvents: false
+
+# Logs settings
+logs:
+  timestamps: false
+  since: '60m'
+  tail: '300'
+
+# Command templates
+commandTemplates:
+  dockerCompose: docker compose
+  restartService: '{{ .DockerCompose }} restart {{ .Service.Name }}'
+  up: '{{ .DockerCompose }} up -d'
+  down: '{{ .DockerCompose }} down'
+  downWithVolumes: '{{ .DockerCompose }} down --volumes'
+  upService: '{{ .DockerCompose }} up -d {{ .Service.Name }}'
+  startService: '{{ .DockerCompose }} start {{ .Service.Name }}'
+  stopService: '{{ .DockerCompose }} stop {{ .Service.Name }}'
+  serviceLogs: '{{ .DockerCompose }} logs --since=60m --follow {{ .Service.Name }}'
+  viewServiceLogs: '{{ .DockerCompose }} logs --follow {{ .Service.Name }}'
+  rebuildService: '{{ .DockerCompose }} up -d --build {{ .Service.Name }}'
+  recreateService: '{{ .DockerCompose }} up -d --force-recreate {{ .Service.Name }}'
+  allLogs: '{{ .DockerCompose }} logs --tail=300 --follow'
+  viewAlLogs: '{{ .DockerCompose }} logs --tail=300 --follow'
+  dockerComposeConfig: '{{ .DockerCompose }} config'
+  checkDockerComposeConfig: '{{ .DockerCompose }} config --quiet'
+  serviceTop: '{{ .DockerCompose }} top {{ .Service.Name }}'
+
+# Stats settings
+stats:
+  graphs:
+    - caption: CPU (%)
+      statPath: DerivedStats.CPUPercentage
+      color: '#89b4fa' # Blue
+    - caption: Memory (%)
+      statPath: DerivedStats.MemoryPercentage
+      color: '#a6e3a1' # Green
+
+# Container commands
+customCommands:
+  containers:
+    - name: bash
+      attach: true
+      command: docker exec -it {{ .Container.ID }} /bin/bash
+      serviceNames: []
+    - name: sh
+      attach: true
+      command: docker exec -it {{ .Container.ID }} /bin/sh
+      serviceNames: []
+
+# Bulk commands
+bulkCommands:
+  services:
+    - name: up
+      command: '{{ .DockerCompose }} up -d {{ range .Services }}{{ .Name }} {{ end }}'
+    - name: stop
+      command: '{{ .DockerCompose }} stop {{ range .Services }}{{ .Name }} {{ end }}'
+    - name: down
+      command: '{{ .DockerCompose }} down {{ range .Services }}{{ .Name }} {{ end }}'
+
+# Replacements
+replacements:
+  - original: 'docker compose'
+    replacement: 'docker-compose'
+
+# OS settings
+os:
+  openCommand: 'xdg-open {{filename}}'
+  openLinkCommand: 'xdg-open {{link}}'
+
+# Update settings
+update:
+  method: never
+
+# Reporting
+reporting: 'off'
+
+# Confirm on quit
+confirmOnQuit: false
+
+# Quit on escape
+quitOnTopLevelReturn: false

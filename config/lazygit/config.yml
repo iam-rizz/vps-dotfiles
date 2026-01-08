@@ -1,0 +1,148 @@
+# lazygit config - Catppuccin Mocha Theme
+# VPS Dotfiles
+
+gui:
+  # Catppuccin Mocha theme
+  theme:
+    activeBorderColor:
+      - '#a6e3a1' # Green
+      - bold
+    inactiveBorderColor:
+      - '#313244' # Surface0
+    optionsTextColor:
+      - '#89b4fa' # Blue
+    selectedLineBgColor:
+      - '#313244' # Surface0
+    selectedRangeBgColor:
+      - '#313244' # Surface0
+    cherryPickedCommitBgColor:
+      - '#94e2d5' # Teal
+    cherryPickedCommitFgColor:
+      - '#89b4fa' # Blue
+    unstagedChangesColor:
+      - '#f38ba8' # Red
+    defaultFgColor:
+      - '#cdd6f4' # Text
+    searchingActiveBorderColor:
+      - '#f9e2af' # Yellow
+  
+  # UI settings
+  showFileTree: true
+  showRandomTip: false
+  showCommandLog: false
+  nerdFontsVersion: "3"
+  
+  # Border style
+  border: rounded
+  
+  # Window size
+  windowSize: normal
+  
+  # Commit length
+  commitLength:
+    show: true
+
+git:
+  paging:
+    colorArg: always
+    pager: delta --dark --paging=never
+  
+  # Auto fetch
+  autoFetch: true
+  autoRefresh: true
+  
+  # Branch sorting
+  branchLogCmd: git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --
+
+# Keybindings
+keybinding:
+  universal:
+    quit: 'q'
+    quit-alt1: '<c-c>'
+    return: '<esc>'
+    quitWithoutChangingDirectory: 'Q'
+    togglePanel: '<tab>'
+    prevItem: '<up>'
+    nextItem: '<down>'
+    prevItem-alt: 'k'
+    nextItem-alt: 'j'
+    prevPage: ','
+    nextPage: '.'
+    scrollLeft: 'H'
+    scrollRight: 'L'
+    gotoTop: '<'
+    gotoBottom: '>'
+    toggleRangeSelect: 'v'
+    rangeSelectDown: '<s-down>'
+    rangeSelectUp: '<s-up>'
+    prevBlock: '<left>'
+    nextBlock: '<right>'
+    prevBlock-alt: 'h'
+    nextBlock-alt: 'l'
+    nextMatch: 'n'
+    prevMatch: 'N'
+    startSearch: '/'
+    optionMenu: 'x'
+    optionMenu-alt1: '?'
+    select: '<space>'
+    goInto: '<enter>'
+    confirm: '<enter>'
+    remove: 'd'
+    new: 'n'
+    edit: 'e'
+    openFile: 'o'
+    scrollUpMain: '<pgup>'
+    scrollDownMain: '<pgdown>'
+    scrollUpMain-alt1: 'K'
+    scrollDownMain-alt1: 'J'
+    scrollUpMain-alt2: '<c-u>'
+    scrollDownMain-alt2: '<c-d>'
+    executeCustomCommand: ':'
+    createRebaseOptionsMenu: 'm'
+    pushFiles: 'P'
+    pullFiles: 'p'
+    refresh: 'R'
+    createPatchOptionsMenu: '<c-p>'
+    nextTab: ']'
+    prevTab: '['
+    nextScreenMode: '+'
+    prevScreenMode: '_'
+    undo: 'z'
+    redo: '<c-z>'
+    filteringMenu: '<c-s>'
+    diffingMenu: 'W'
+    diffingMenu-alt: '<c-e>'
+    copyToClipboard: '<c-o>'
+    openRecentRepos: '<c-r>'
+    submitEditorText: '<enter>'
+    extrasMenu: '@'
+    toggleWhitespaceInDiffView: '<c-w>'
+    increaseContextInDiffView: '}'
+    decreaseContextInDiffView: '{'
+
+# Custom commands
+customCommands:
+  - key: 'C'
+    command: git cz
+    description: 'Commit with commitizen'
+    context: 'files'
+    loadingText: 'Opening commitizen...'
+    subprocess: true
+  
+  - key: '<c-a>'
+    command: git commit --amend --no-edit
+    context: 'files'
+    description: 'Amend commit without editing message'
+    loadingText: 'Amending...'
+
+# Refresh settings
+refresher:
+  refreshInterval: 10
+  fetchInterval: 60
+
+# Update settings
+update:
+  method: never
+
+# Notification settings
+notARepository: 'skip'

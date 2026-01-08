@@ -36,6 +36,8 @@ declare -A symlinks=(
     ["$DOTFILES_DIR/config/nvim/init.lua"]="$HOME/.config/nvim/init.lua"
     ["$DOTFILES_DIR/config/git/.gitconfig"]="$HOME/.gitconfig"
     ["$DOTFILES_DIR/config/git/.gitignore"]="$HOME/.gitignore_global"
+    ["$DOTFILES_DIR/config/lazygit/config.yml"]="$HOME/.config/lazygit/config.yml"
+    ["$DOTFILES_DIR/config/lazydocker/config.yml"]="$HOME/.config/lazydocker/config.yml"
     ["$DOTFILES_DIR/themes/catppuccin/btop.theme"]="$HOME/.config/btop/themes/catppuccin_mocha.theme"
 )
 

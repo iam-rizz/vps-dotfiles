@@ -79,6 +79,13 @@ cd ~/.dotfiles
 
 This will download and install Catppuccin themes for bat (latte, frappe, macchiato, mocha).
 
+**Install Lazy Tools (lazygit & lazydocker):**
+```bash
+~/.dotfiles/scripts/install-lazy-tools.sh
+```
+
+This will install lazygit (Git TUI) and lazydocker (Docker TUI) with Catppuccin Mocha theme.
+
 **Install Neovim Plugins:**
 ```bash
 nvim --headless "+Lazy! sync" +qa
@@ -119,6 +126,8 @@ Options:
 - ripgrep - Modern grep replacement
 - tmux - Terminal multiplexer
 - neovim - Text editor
+- lazygit - Git TUI (Terminal UI)
+- lazydocker - Docker TUI
 
 ## Key Commands
 
@@ -155,6 +164,7 @@ Options:
 | `gp` | `git push` |
 | `gl` | `git log --oneline` |
 | `gco` | `git checkout` |
+| `lg` | `lazygit` (Git TUI) |
 
 ### Docker
 | Alias | Command |
@@ -163,6 +173,7 @@ Options:
 | `dexec` | `docker exec -it` |
 | `dlogs` | `docker logs -f` |
 | `dprune` | `docker system prune -af` |
+| `lzd` | `lazydocker` (Docker TUI) |
 
 ### System
 | Alias | Command |
@@ -224,6 +235,8 @@ cd ~/.dotfiles && git pull && ./scripts/link.sh
 - **Fastfetch**:
   - Default: `~/.dotfiles/config/fastfetch/config.jsonc` (full info)
   - Compact: `~/.dotfiles/config/fastfetch/config-full.jsonc` (for `ffc` alias)
+- **Lazygit**: `~/.config/lazygit/config.yml`
+- **Lazydocker**: `~/.config/lazydocker/config.yml`
 
 ## Credits
 
