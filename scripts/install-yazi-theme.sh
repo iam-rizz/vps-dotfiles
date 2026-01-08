@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # install-yazi-theme.sh - Install Catppuccin theme for yazi
 # VPS Dotfiles
+# Based on official catppuccin/yazi installation method
 
 set -e
 
@@ -27,7 +28,7 @@ echo -e "${GREEN}✓ Found yazi${NC}"
 
 # Yazi config directory
 YAZI_CONFIG_DIR="$HOME/.config/yazi"
-FLAVORS_DIR="$YAZI_CONFIG_DIR/flavors"
+THEMES_DIR="$YAZI_CONFIG_DIR/themes"
 
 echo -e "${BLUE}→ Yazi config directory: $YAZI_CONFIG_DIR${NC}"
 
@@ -35,64 +36,37 @@ echo -e "${BLUE}→ Yazi config directory: $YAZI_CONFIG_DIR${NC}"
 echo -e "${BLUE}→ Cleaning up old configurations...${NC}"
 rm -rf "$YAZI_CONFIG_DIR/init.lua" 2>/dev/null || true
 rm -rf "$YAZI_CONFIG_DIR/plugins" 2>/dev/null || true
-rm -rf "$FLAVORS_DIR" 2>/dev/null || true
+rm -rf "$YAZI_CONFIG_DIR/flavors" 2>/dev/null || true
 
 # Create directories
-mkdir -p "$FLAVORS_DIR"
+mkdir -p "$THEMES_DIR"
+mkdir -p "$YAZI_CONFIG_DIR"
 echo -e "${GREEN}✓ Created config directories${NC}"
 
-# Clone Catppuccin theme using ya pack (official method)
-echo -e "${BLUE}→ Installing Catppuccin flavors via ya pack...${NC}"
+# Clone Catppuccin theme (official method: copy theme.toml directly)
+echo -e "${BLUE}→ Downloading Catppuccin themes...${NC}"
+cd /tmp
+rm -rf yazi-catppuccin
+git clone --quiet --depth 1 https://github.com/catppuccin/yazi.git yazi-catppuccin
 
-# Install each flavor using ya pack
-ya pack -a catppuccin/yazi:latte 2>/dev/null || {
-    echo -e "${YELLOW}→ ya pack failed, using manual installation...${NC}"
-    
-    # Manual installation fallback
-    cd /tmp
-    rm -rf yazi-catppuccin
-    git clone --quiet --depth 1 https://github.com/catppuccin/yazi.git yazi-catppuccin
-    
-    # Copy flavors in correct .yazi format
-    for flavor in latte frappe macchiato mocha; do
-        mkdir -p "$FLAVORS_DIR/${flavor}.yazi"
-        # Find and copy the mauve accent theme as default for each flavor
-        if [ -f "yazi-catppuccin/themes/${flavor}/catppuccin-${flavor}-mauve.toml" ]; then
-            cp "yazi-catppuccin/themes/${flavor}/catppuccin-${flavor}-mauve.toml" "$FLAVORS_DIR/${flavor}.yazi/flavor.toml"
-        fi
-        # Also copy LICENSE if exists
-        if [ -f "yazi-catppuccin/LICENSE" ]; then
-            cp "yazi-catppuccin/LICENSE" "$FLAVORS_DIR/${flavor}.yazi/"
-        fi
-    done
-    
-    rm -rf yazi-catppuccin
-}
+# Copy all theme files to themes directory
+echo -e "${BLUE}→ Installing theme files...${NC}"
+cp yazi-catppuccin/themes/catppuccin-*.toml "$THEMES_DIR/"
 
-# Try installing other flavors
-ya pack -a catppuccin/yazi:frappe 2>/dev/null || true
-ya pack -a catppuccin/yazi:macchiato 2>/dev/null || true
-ya pack -a catppuccin/yazi:mocha 2>/dev/null || true
+# Cleanup
+rm -rf yazi-catppuccin
 
 echo -e "${GREEN}✓ Catppuccin themes installed${NC}"
 
-# Create or update theme.toml
-echo -e "${BLUE}→ Configuring default theme (Macchiato)...${NC}"
+# Set default theme (Macchiato with mauve accent)
+echo -e "${BLUE}→ Setting default theme (Macchiato)...${NC}"
+cp "$THEMES_DIR/catppuccin-macchiato-mauve.toml" "$YAZI_CONFIG_DIR/theme.toml"
 
-cat > "$YAZI_CONFIG_DIR/theme.toml" << 'EOF'
-# Yazi theme configuration
-# VPS Dotfiles - Catppuccin Macchiato
+echo -e "${GREEN}✓ Default theme configured${NC}"
 
-# Use Catppuccin Macchiato flavor
-[flavor]
-use = "macchiato"
-EOF
-
-echo -e "${GREEN}✓ Theme configuration created${NC}"
-
-# List installed flavors
-echo -e "${BLUE}→ Installed flavors:${NC}"
-ls -d "$FLAVORS_DIR"/*.yazi 2>/dev/null | xargs -n1 basename | sed 's/.yazi$/  ✓ &/' || echo "  (none found)"
+# List installed themes
+echo -e "${BLUE}→ Installed themes:${NC}"
+ls "$THEMES_DIR"/*.toml 2>/dev/null | xargs -n1 basename | sed 's/^/  ✓ /' || echo "  (none found)"
 
 echo
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"

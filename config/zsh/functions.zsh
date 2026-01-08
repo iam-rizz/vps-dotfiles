@@ -373,14 +373,16 @@ lazygit_theme() {
 
 # Switch yazi theme
 yazi_theme() {
+    local themes_dir="$HOME/.config/yazi/themes"
+    local config_dir="$HOME/.config/yazi"
+    
     if [ -z "$1" ]; then
         echo "Usage: yazi_theme <latte|frappe|macchiato|mocha>"
         echo ""
         
-        # Show current theme
-        local config_file="$HOME/.config/yazi/theme.toml"
-        if [ -f "$config_file" ]; then
-            local current=$(grep 'use = ' "$config_file" | grep -oP 'use = "\K[^"]+' | head -1)
+        # Show current theme by checking theme.toml
+        if [ -f "$config_dir/theme.toml" ]; then
+            local current=$(grep -oP 'catppuccin-\K[^-]+' "$config_dir/theme.toml" | head -1)
             if [ -n "$current" ]; then
                 echo "Current theme: $current"
             fi
@@ -407,25 +409,16 @@ yazi_theme() {
             ;;
     esac
     
-    # Check if theme exists (check both .yazi folder and subfolder format)
-    local flavors_dir="$HOME/.config/yazi/flavors"
-    if [ ! -d "$flavors_dir/${theme_name}.yazi" ] && [ ! -d "$flavors_dir/${theme_name}" ]; then
-        echo "Error: Theme not found: $theme_name"
+    # Check if theme file exists
+    local theme_file="$themes_dir/catppuccin-${theme_name}-mauve.toml"
+    if [ ! -f "$theme_file" ]; then
+        echo "Error: Theme file not found: $theme_file"
         echo "Run: ~/.dotfiles/scripts/install-yazi-theme.sh"
         return 1
     fi
     
-    # Update theme.toml
-    local config_file="$HOME/.config/yazi/theme.toml"
-    mkdir -p "$HOME/.config/yazi"
-    
-    cat > "$config_file" << EOF
-# Yazi theme configuration
-# VPS Dotfiles - Catppuccin
-
-[flavor]
-use = "$theme_name"
-EOF
+    # Copy theme file to theme.toml (official method)
+    cp "$theme_file" "$config_dir/theme.toml"
     
     echo "Switched to: $theme_name"
     echo "Restart yazi to see changes"
