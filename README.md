@@ -4,6 +4,27 @@ Dotfiles for VPS/Linux servers with Zsh, Zinit, Starship, and Catppuccin Mocha t
 
 Inspired by [caelestia-dots](https://github.com/caelestia-dots) and [JaKooLit Hyprland-Dots](https://github.com/JaKooLit/Hyprland-Dots).
 
+## Tested On
+
+✅ **Debian 13 (Trixie)** - Fully tested and working  
+✅ **Ubuntu 24.04 LTS** - Recommended for stability  
+✅ **Ubuntu 22.04 LTS** - Stable and well-supported  
+✅ **Fedora 40+** - Modern packages  
+✅ **Rocky Linux 9** - Enterprise-grade  
+✅ **Arch Linux** - Latest packages
+
+### Requirements
+- **Fastfetch**: Available in Debian 13+, Ubuntu 24.04+, Fedora 40+, Arch Linux
+- **Modern terminal**: Supports Nerd Fonts and true color
+- **Sudo access**: For package installation
+
+### Recommended Distributions
+For best experience with all features (especially fastfetch):
+- **Debian 13 (Trixie)** or newer
+- **Ubuntu 24.04 LTS** or newer  
+- **Fedora 40** or newer
+- **Arch Linux** (rolling release)
+
 ## Features
 
 - **Zsh** with [Zinit](https://github.com/zdharma-continuum/zinit) plugin manager (turbo mode for fast loading)
@@ -62,7 +83,9 @@ Without a Nerd Font, icons will appear as boxes or question marks.
 
 ## Installation
 
-### Quick Install
+### Quick Install (Recommended)
+
+One command to install everything:
 
 ```bash
 git clone https://github.com/iam-rizz/vps-dotfiles.git ~/.dotfiles
@@ -70,35 +93,65 @@ cd ~/.dotfiles
 ./install.sh --all
 ```
 
-### Post-Installation (Optional)
+This will automatically:
+- Install all dependencies (zsh, git, curl, etc.)
+- Install optional tools (starship, btop, fastfetch, bat, lazygit, lazydocker, etc.)
+- Install Zinit plugin manager
+- Create symlinks for all configs
+- Install bat Catppuccin themes
+- Install lazygit and lazydocker with themes
+- Install Neovim plugins
+- Set zsh as default shell
+- Disable default MOTD
 
-**Install Bat Catppuccin Theme:**
+### Manual Installation (Step by Step)
+
+If you prefer to install components separately:
+
 ```bash
-~/.dotfiles/scripts/install-bat-theme.sh
+# 1. Clone repository
+git clone https://github.com/iam-rizz/vps-dotfiles.git ~/.dotfiles
+cd ~/.dotfiles
+
+# 2. Install core components
+./install.sh --shell
+
+# 3. Install optional tools
+./install.sh --tools
+
+# 4. Install themes (optional)
+./scripts/install-bat-theme.sh
+./scripts/install-lazygit-themes.sh
 ```
 
-This will download and install Catppuccin themes for bat (latte, frappe, macchiato, mocha).
+### Post-Installation
 
-**Install Lazy Tools (lazygit & lazydocker):**
+After installation completes:
+
+1. **Log out and log back in** (or run `source ~/.zshrc`)
+2. All themes and tools are already installed!
+3. Run `dotfiles_help` to see all available commands
+
+**Note**: The `--all` option automatically installs:
+- ✅ Bat Catppuccin themes
+- ✅ Lazygit and lazydocker binaries
+- ✅ Lazygit Catppuccin themes (default: Macchiato)
+- ✅ Neovim plugins
+
+No need to run separate installation scripts!
+
+### Options
+
 ```bash
-~/.dotfiles/scripts/install-lazy-tools.sh
+./install.sh [options]
+
+Options:
+  --all           Install all components (recommended)
+  --shell         Install shell configs only
+  --tools         Install tool configs only
+  --no-backup     Skip backup of existing files
+  --help          Show help message
 ```
-
-This will install lazygit (Git TUI) and lazydocker (Docker TUI) with Catppuccin Mocha theme.
-
-**Install Lazygit Themes:**
-```bash
-~/.dotfiles/scripts/install-lazygit-themes.sh
-```
-
-This will download all Catppuccin themes for lazygit (latte, frappe, macchiato, mocha). Default: Macchiato.
-
-**Install Neovim Plugins:**
-```bash
-nvim --headless "+Lazy! sync" +qa
-```
-
-This will install all Neovim plugins including Catppuccin theme, treesitter, lualine, etc.
 
 ### Options
 

@@ -363,6 +363,48 @@ EOF
     print_success "Installation state saved"
 }
 
+# Install additional themes and tools
+install_additional_tools() {
+    print_header "Installing Additional Tools & Themes"
+    
+    # Install bat themes
+    if cmd_exists bat || cmd_exists batcat; then
+        print_info "Installing bat Catppuccin themes..."
+        if bash "$DOTFILES_DIR/scripts/install-bat-theme.sh"; then
+            print_success "Bat themes installed"
+        else
+            print_warning "Failed to install bat themes"
+        fi
+    else
+        print_warning "Bat not installed, skipping theme installation"
+    fi
+    
+    # Install lazy tools (lazygit & lazydocker)
+    print_info "Installing lazygit and lazydocker..."
+    if bash "$DOTFILES_DIR/scripts/install-lazy-tools.sh"; then
+        print_success "Lazy tools installed"
+        
+        # Install lazygit themes
+        print_info "Installing lazygit Catppuccin themes..."
+        if bash "$DOTFILES_DIR/scripts/install-lazygit-themes.sh"; then
+            print_success "Lazygit themes installed"
+        else
+            print_warning "Failed to install lazygit themes"
+        fi
+    else
+        print_warning "Failed to install lazy tools"
+    fi
+    
+    # Install Neovim plugins
+    if cmd_exists nvim; then
+        print_info "Installing Neovim plugins..."
+        nvim --headless "+Lazy! sync" +qa 2>/dev/null || true
+        print_success "Neovim plugins installed"
+    else
+        print_warning "Neovim not installed, skipping plugin installation"
+    fi
+}
+
 # Disable default MOTD
 disable_default_motd() {
     print_header "Disabling Default MOTD"
@@ -486,11 +528,34 @@ main() {
         disable_default_motd
     fi
     
+    # Install additional tools and themes
+    if $install_all; then
+        install_additional_tools
+    fi
+    
     # Save state
     save_state
     
     print_header "Installation Complete!"
     echo -e "${GREEN}Your dotfiles have been installed successfully!${NC}\n"
+    echo -e "${CYAN}Installed components:${NC}"
+    echo -e "  ✓ Zsh with Zinit plugin manager"
+    echo -e "  ✓ Starship prompt (Catppuccin Mocha)"
+    echo -e "  ✓ Bat with Catppuccin themes"
+    echo -e "  ✓ Lazygit with Catppuccin themes (default: Macchiato)"
+    echo -e "  ✓ Lazydocker with Catppuccin theme"
+    echo -e "  ✓ Neovim with plugins"
+    echo -e "  ✓ Tmux, btop, fastfetch configs"
+    echo ""
+    echo -e "${CYAN}Quick commands:${NC}"
+    echo -e "  ${YELLOW}dotfiles_help${NC}      - Show all custom commands"
+    echo -e "  ${YELLOW}lg${NC}                 - Launch lazygit"
+    echo -e "  ${YELLOW}lzd${NC}                - Launch lazydocker"
+    echo -e "  ${YELLOW}bat_theme${NC}          - Switch bat theme"
+    echo -e "  ${YELLOW}lazygit_theme${NC}      - Switch lazygit theme"
+    echo -e "  ${YELLOW}prompt_bold${NC}        - Switch to bold prompt"
+    echo -e "  ${YELLOW}prompt_minimal${NC}     - Switch to minimal prompt"
+    echo ""
     echo -e "To apply changes, either:"
     echo -e "  ${CYAN}1.${NC} Log out and log back in"
     echo -e "  ${CYAN}2.${NC} Run: ${YELLOW}source ~/.zshrc${NC}"
