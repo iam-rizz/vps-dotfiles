@@ -138,6 +138,14 @@ Options:
 | `prompt_bold` | Switch to bold/box prompt |
 | `prompt_minimal` | Switch to minimal prompt |
 
+### Bat Theme Switching
+| Command | Description |
+|---------|-------------|
+| `bat_theme latte` | Switch to Catppuccin Latte (light) |
+| `bat_theme frappe` | Switch to Catppuccin Frappe (dark warm) |
+| `bat_theme macchiato` | Switch to Catppuccin Macchiato (dark cool) |
+| `bat_theme mocha` | Switch to Catppuccin Mocha (dark, default) |
+
 ### Git
 | Alias | Command |
 |-------|---------|
@@ -182,6 +190,8 @@ Options:
 - `gac` - Git add and commit
 - `gacp` - Git add, commit and push
 - `gclone` - Clone and cd into repo
+- `prompt_bold` / `prompt_minimal` - Switch between prompt modes
+- `bat_theme` - Switch bat color theme (latte/frappe/macchiato/mocha)
 
 ## Zinit Plugins
 

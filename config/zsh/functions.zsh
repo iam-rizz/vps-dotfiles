@@ -256,6 +256,57 @@ drmiall() {
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# Theme Switching Functions
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+# Switch bat theme
+bat_theme() {
+    if [ -z "$1" ]; then
+        echo "Usage: bat_theme <latte|frappe|macchiato|mocha>"
+        echo ""
+        echo "Current theme: $BAT_THEME"
+        echo ""
+        echo "Available themes:"
+        echo "  latte      - Light theme"
+        echo "  frappe     - Dark theme (warm)"
+        echo "  macchiato  - Dark theme (cool)"
+        echo "  mocha      - Dark theme (default)"
+        return 1
+    fi
+    
+    local theme_name
+    case "$1" in
+        latte)
+            theme_name="Catppuccin Latte"
+            ;;
+        frappe)
+            theme_name="Catppuccin Frappe"
+            ;;
+        macchiato)
+            theme_name="Catppuccin Macchiato"
+            ;;
+        mocha)
+            theme_name="Catppuccin Mocha"
+            ;;
+        *)
+            echo "Error: Unknown theme '$1'"
+            echo "Available: latte, frappe, macchiato, mocha"
+            return 1
+            ;;
+    esac
+    
+    export BAT_THEME="$theme_name"
+    echo "Switched to: $theme_name"
+    
+    # Update .zshrc to persist
+    local dotfiles_dir="${DOTFILES_DIR:-$HOME/.dotfiles}"
+    if [ -f "$dotfiles_dir/config/zsh/.zshrc" ]; then
+        sed -i "s/export BAT_THEME=.*/export BAT_THEME=\"$theme_name\"/" "$dotfiles_dir/config/zsh/.zshrc"
+        echo "Updated .zshrc with new theme"
+    fi
+}
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Prompt Switching Functions
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -334,5 +385,6 @@ dotfiles_help() {
     echo "  dotfiles_status    - Show dotfiles status"
     echo "  prompt_bold        - Switch to bold prompt"
     echo "  prompt_minimal     - Switch to minimal prompt"
+    echo "  bat_theme          - Switch bat color theme"
     echo ""
 }

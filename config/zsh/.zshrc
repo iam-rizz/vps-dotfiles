@@ -105,7 +105,7 @@ bindkey '^[[1;5D' backward-word
 
 # Bat theme (if Catppuccin theme is installed)
 if command -v bat &> /dev/null || command -v batcat &> /dev/null; then
-    export BAT_THEME="Catppuccin-mocha"
+    export BAT_THEME="Catppuccin Mocha"
 fi
 
 # FZF colors (Catppuccin Mocha)

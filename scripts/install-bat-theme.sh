@@ -47,10 +47,10 @@ echo -e "${BLUE}→ Downloading Catppuccin themes...${NC}"
 cd "$THEMES_DIR"
 
 # Download all Catppuccin variants
-curl -fsSL https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-latte.tmTheme -o Catppuccin-latte.tmTheme
-curl -fsSL https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-frappe.tmTheme -o Catppuccin-frappe.tmTheme
-curl -fsSL https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-macchiato.tmTheme -o Catppuccin-macchiato.tmTheme
-curl -fsSL https://raw.githubusercontent.com/catppuccin/bat/main/Catppuccin-mocha.tmTheme -o Catppuccin-mocha.tmTheme
+wget -q --show-progress -P "$THEMES_DIR" "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Latte.tmTheme"
+wget -q --show-progress -P "$THEMES_DIR" "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Frappe.tmTheme"
+wget -q --show-progress -P "$THEMES_DIR" "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Macchiato.tmTheme"
+wget -q --show-progress -P "$THEMES_DIR" "https://github.com/catppuccin/bat/raw/main/themes/Catppuccin%20Mocha.tmTheme"
 
 echo -e "${GREEN}✓ Downloaded Catppuccin themes${NC}"
 
@@ -65,13 +65,16 @@ echo -e "${GREEN}✓ Catppuccin theme installed successfully!${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo
 echo -e "${YELLOW}Available themes:${NC}"
-echo -e "  - Catppuccin-latte"
-echo -e "  - Catppuccin-frappe"
-echo -e "  - Catppuccin-macchiato"
-echo -e "  - Catppuccin-mocha (default in .zshrc)"
+echo -e "  - Catppuccin Latte"
+echo -e "  - Catppuccin Frappe"
+echo -e "  - Catppuccin Macchiato"
+echo -e "  - Catppuccin Mocha (default in .zshrc)"
+echo
+echo -e "${YELLOW}Switch theme:${NC}"
+echo -e "  bat_theme latte|frappe|macchiato|mocha"
 echo
 echo -e "${YELLOW}Test the theme:${NC}"
-echo -e "  $BAT_CMD --theme=Catppuccin-mocha ~/.zshrc"
+echo -e "  $BAT_CMD --theme=\"Catppuccin Macchiato\" ~/.zshrc"
 echo
 echo -e "${YELLOW}List all themes:${NC}"
 echo -e "  $BAT_CMD --list-themes"
