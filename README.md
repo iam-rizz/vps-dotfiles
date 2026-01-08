@@ -13,8 +13,8 @@ Inspired by [caelestia-dots](https://github.com/caelestia-dots) and [JaKooLit Hy
   - Nerd Font symbols support (requires Nerd Font installation)
 - **[btop](https://github.com/aristocratos/btop)** system monitor with Catppuccin theme
 - **[fastfetch](https://github.com/fastfetch-cli/fastfetch)** system info display
-  - Compact config for login
-  - Full config for `ff` alias
+  - Full config for default `fastfetch` command
+  - Compact config for `ff` alias (login screen style)
 - **Neovim** with lazy.nvim and essential plugins
 - **tmux** with sensible keybindings
 - **Catppuccin Mocha** color scheme across all tools
@@ -146,7 +146,7 @@ Options:
 | `update` | `sudo apt update && upgrade` |
 | `ports` | `ss -tuln` |
 | `reload!` | `source ~/.zshrc` |
-| `ff` | `fastfetch` (full config) |
+| `ff` | `fastfetch --config config-full.jsonc` (compact) |
 
 ## Custom Functions
 
@@ -196,8 +196,8 @@ cd ~/.dotfiles && git pull && ./scripts/link.sh
   - Minimal mode: `~/.dotfiles/config/starship/starship-minimal.toml`
 - **Plugins**: Edit `~/.dotfiles/config/zsh/plugins.zsh`
 - **Fastfetch**:
-  - Login: `~/.dotfiles/config/fastfetch/config.jsonc`
-  - Full: `~/.dotfiles/config/fastfetch/config-full.jsonc`
+  - Default: `~/.dotfiles/config/fastfetch/config.jsonc` (full info)
+  - Compact: `~/.dotfiles/config/fastfetch/config-full.jsonc` (for `ff` alias)
 
 ## Credits
 
