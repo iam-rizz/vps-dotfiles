@@ -165,7 +165,7 @@ alias timestamp='date +%s'
 
 # Fastfetch compact info
 if command -v fastfetch &> /dev/null; then
-    alias ffc='fastfetch --config ~/.config/fastfetch/config-full.jsonc'
+    alias ffc='fastfetch --config ~/.doftiles/config/fastfetch/config-full.jsonc'
 fi
 
 # Grep with color

@@ -116,5 +116,5 @@ fi
 
 # Show system info on login
 if [[ -o interactive ]] && command -v fastfetch &> /dev/null; then
-    fastfetch
+    fastfetch --config ~/.dotfiles/config/fastfetch/config.jsonc
 fi
