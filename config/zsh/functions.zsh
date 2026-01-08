@@ -407,8 +407,9 @@ yazi_theme() {
             ;;
     esac
     
-    # Check if theme exists
-    if [ ! -d "$HOME/.config/yazi/flavors/$theme_name.yazi" ]; then
+    # Check if theme exists (check both .yazi folder and subfolder format)
+    local flavors_dir="$HOME/.config/yazi/flavors"
+    if [ ! -d "$flavors_dir/${theme_name}.yazi" ] && [ ! -d "$flavors_dir/${theme_name}" ]; then
         echo "Error: Theme not found: $theme_name"
         echo "Run: ~/.dotfiles/scripts/install-yazi-theme.sh"
         return 1
@@ -416,15 +417,18 @@ yazi_theme() {
     
     # Update theme.toml
     local config_file="$HOME/.config/yazi/theme.toml"
-    if [ -f "$config_file" ]; then
-        sed -i "s/use = \".*\"/use = \"$theme_name\"/" "$config_file"
-        echo "Switched to: $theme_name"
-        echo "Restart yazi to see changes"
-    else
-        echo "Error: theme.toml not found"
-        echo "Run: ~/.dotfiles/scripts/install-yazi-theme.sh"
-        return 1
-    fi
+    mkdir -p "$HOME/.config/yazi"
+    
+    cat > "$config_file" << EOF
+# Yazi theme configuration
+# VPS Dotfiles - Catppuccin
+
+[flavor]
+use = "$theme_name"
+EOF
+    
+    echo "Switched to: $theme_name"
+    echo "Restart yazi to see changes"
 }
 
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
