@@ -86,6 +86,13 @@ This will download and install Catppuccin themes for bat (latte, frappe, macchia
 
 This will install lazygit (Git TUI) and lazydocker (Docker TUI) with Catppuccin Mocha theme.
 
+**Install Lazygit Themes:**
+```bash
+~/.dotfiles/scripts/install-lazygit-themes.sh
+```
+
+This will download all Catppuccin themes for lazygit (latte, frappe, macchiato, mocha). Default: Macchiato.
+
 **Install Neovim Plugins:**
 ```bash
 nvim --headless "+Lazy! sync" +qa
@@ -155,6 +162,14 @@ Options:
 | `bat_theme macchiato` | Switch to Catppuccin Macchiato (dark cool) |
 | `bat_theme mocha` | Switch to Catppuccin Mocha (dark, default) |
 
+### Lazygit Theme Switching
+| Command | Description |
+|---------|-------------|
+| `lazygit_theme latte` | Switch to Catppuccin Latte (light) |
+| `lazygit_theme frappe` | Switch to Catppuccin Frappe (dark warm) |
+| `lazygit_theme macchiato` | Switch to Catppuccin Macchiato (dark cool, default) |
+| `lazygit_theme mocha` | Switch to Catppuccin Mocha (dark) |
+
 ### Git
 | Alias | Command |
 |-------|---------|
@@ -203,6 +218,7 @@ Options:
 - `gclone` - Clone and cd into repo
 - `prompt_bold` / `prompt_minimal` - Switch between prompt modes
 - `bat_theme` - Switch bat color theme (latte/frappe/macchiato/mocha)
+- `lazygit_theme` - Switch lazygit color theme (latte/frappe/macchiato/mocha)
 
 ## Zinit Plugins
 

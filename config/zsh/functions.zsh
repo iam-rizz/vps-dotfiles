@@ -306,6 +306,71 @@ bat_theme() {
     fi
 }
 
+# Switch lazygit theme
+lazygit_theme() {
+    if [ -z "$1" ]; then
+        echo "Usage: lazygit_theme <latte|frappe|macchiato|mocha>"
+        echo ""
+        
+        # Show current theme
+        local config_file="$HOME/.config/lazygit/config.yml"
+        if [ -f "$config_file" ]; then
+            local current=$(grep "catppuccin-" "$config_file" | grep -oP 'catppuccin-\K[^.]+' | head -1)
+            if [ -n "$current" ]; then
+                echo "Current theme: $current"
+            fi
+        fi
+        
+        echo ""
+        echo "Available themes:"
+        echo "  latte      - Light theme"
+        echo "  frappe     - Dark theme (warm)"
+        echo "  macchiato  - Dark theme (cool, default)"
+        echo "  mocha      - Dark theme"
+        return 1
+    fi
+    
+    local theme_file
+    case "$1" in
+        latte)
+            theme_file="catppuccin-latte.yml"
+            ;;
+        frappe)
+            theme_file="catppuccin-frappe.yml"
+            ;;
+        macchiato)
+            theme_file="catppuccin-macchiato.yml"
+            ;;
+        mocha)
+            theme_file="catppuccin-mocha.yml"
+            ;;
+        *)
+            echo "Error: Unknown theme '$1'"
+            echo "Available: latte, frappe, macchiato, mocha"
+            return 1
+            ;;
+    esac
+    
+    # Check if theme file exists
+    if [ ! -f "$HOME/.config/lazygit/themes/$theme_file" ]; then
+        echo "Error: Theme file not found: $theme_file"
+        echo "Run: ~/.dotfiles/scripts/install-lazygit-themes.sh"
+        return 1
+    fi
+    
+    # Update config.yml
+    local config_file="$HOME/.config/lazygit/config.yml"
+    if [ -f "$config_file" ]; then
+        sed -i "s|catppuccin-[^.]*\.yml|$theme_file|" "$config_file"
+        echo "Switched to: $1"
+        echo "Restart lazygit to see changes"
+    else
+        echo "Error: config.yml not found"
+        echo "Run: ~/.dotfiles/scripts/install-lazygit-themes.sh"
+        return 1
+    fi
+}
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Prompt Switching Functions
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -386,5 +451,6 @@ dotfiles_help() {
     echo "  prompt_bold        - Switch to bold prompt"
     echo "  prompt_minimal     - Switch to minimal prompt"
     echo "  bat_theme          - Switch bat color theme"
+    echo "  lazygit_theme      - Switch lazygit color theme"
     echo ""
 }
