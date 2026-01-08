@@ -156,7 +156,35 @@ Options:
   --shell         Install shell configs only
   --tools         Install tool configs only
   --no-backup     Skip backup of existing files
+  --keep-old      Keep old dotfiles (don't disable them)
   --help          Show help message
+```
+
+### Auto-Disable Old Dotfiles
+
+The installer automatically detects and disables old dotfiles to prevent conflicts:
+
+**Detected frameworks/managers:**
+- Oh-My-Zsh (`~/.oh-my-zsh`)
+- Zgen (`~/.zgen`)
+- Antigen (`~/.antigen`)
+- Zprezto (`~/.zprezto`)
+- Zplug (`~/.zplug`)
+- Powerlevel10k (`~/.p10k.zsh`)
+
+**Detected dotfiles directories:**
+- `~/dotfiles`, `~/dotfiles2`, `~/.dotfiles2`
+- `~/config` (old config folder)
+
+**What happens:**
+1. Old dotfiles are moved to `~/.old-dotfiles-disabled-{timestamp}/`
+2. Old symlinks pointing to other dotfiles are removed
+3. Old zsh completion cache is cleaned
+4. Old `.zshrc` with framework references is backed up
+
+**To keep old dotfiles:**
+```bash
+./install.sh --all --keep-old
 ```
 
 ## Uninstallation

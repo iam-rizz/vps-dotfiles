@@ -134,6 +134,122 @@ cmd_exists() {
     command -v "$1" &> /dev/null
 }
 
+# Detect and disable old dotfiles
+disable_old_dotfiles() {
+    print_header "Detecting & Disabling Old Dotfiles"
+    
+    local OLD_DOTFILES_BACKUP="$HOME/.old-dotfiles-disabled-$(date +%Y%m%d-%H%M%S)"
+    local found_old=0
+    
+    # Old dotfiles directories to check
+    local old_dirs=(
+        "$HOME/.oh-my-zsh"
+        "$HOME/.zgen"
+        "$HOME/.antigen"
+        "$HOME/.zprezto"
+        "$HOME/.zplug"
+        "$HOME/.zinit"  # Old zinit location (we use ~/.local/share/zinit)
+        "$HOME/dotfiles"
+        "$HOME/dotfiles2"
+        "$HOME/.dotfiles2"
+        "$HOME/config"  # Old config folder in home
+    )
+    
+    # Old config files to check
+    local old_files=(
+        "$HOME/.p10k.zsh"
+        "$HOME/.zsh_welcome"
+        "$HOME/.zshrc.pre-oh-my-zsh"
+        "$HOME/.zshrc.omz-backup"
+    )
+    
+    # Check for old dotfiles directories
+    for dir in "${old_dirs[@]}"; do
+        # Skip if it's our current dotfiles directory
+        if [ "$dir" = "$DOTFILES_DIR" ]; then
+            continue
+        fi
+        
+        if [ -d "$dir" ]; then
+            print_warning "Found old dotfiles: $dir"
+            mkdir -p "$OLD_DOTFILES_BACKUP"
+            mv "$dir" "$OLD_DOTFILES_BACKUP/$(basename "$dir")"
+            print_success "Moved to: $OLD_DOTFILES_BACKUP/$(basename "$dir")"
+            found_old=$((found_old + 1))
+        fi
+    done
+    
+    # Check for old config files
+    for file in "${old_files[@]}"; do
+        if [ -f "$file" ]; then
+            print_warning "Found old config: $file"
+            mkdir -p "$OLD_DOTFILES_BACKUP"
+            mv "$file" "$OLD_DOTFILES_BACKUP/$(basename "$file")"
+            print_success "Moved to: $OLD_DOTFILES_BACKUP/$(basename "$file")"
+            found_old=$((found_old + 1))
+        fi
+    done
+    
+    # Check for symlinks pointing to old dotfiles
+    local symlink_targets=(
+        "$HOME/.zshrc"
+        "$HOME/.zshenv"
+        "$HOME/.bashrc"
+        "$HOME/.bash_aliases"
+        "$HOME/.tmux.conf"
+        "$HOME/.gitconfig"
+    )
+    
+    for link in "${symlink_targets[@]}"; do
+        if [ -L "$link" ]; then
+            local target
+            target=$(readlink -f "$link" 2>/dev/null || true)
+            # Check if symlink points to old dotfiles (not our current one)
+            if [[ -n "$target" && "$target" != "$DOTFILES_DIR"* ]]; then
+                if [[ "$target" == *"dotfiles"* || "$target" == *"config"* ]]; then
+                    print_warning "Found old symlink: $link -> $target"
+                    rm -f "$link"
+                    print_success "Removed old symlink: $link"
+                    found_old=$((found_old + 1))
+                fi
+            fi
+        fi
+    done
+    
+    # Clean up old zsh completion files
+    local old_zcompdump=(
+        "$HOME/.zcompdump"
+        "$HOME/.zcompdump-"*
+    )
+    
+    for file in "${old_zcompdump[@]}"; do
+        if [ -f "$file" ] 2>/dev/null; then
+            rm -f "$file" 2>/dev/null || true
+        fi
+    done
+    print_info "Cleaned up old zsh completion cache"
+    
+    # Check for oh-my-zsh sourcing in existing .zshrc
+    if [ -f "$HOME/.zshrc" ] && ! [ -L "$HOME/.zshrc" ]; then
+        if grep -q "oh-my-zsh\|zgen\|antigen\|zprezto\|p10k\|powerlevel" "$HOME/.zshrc" 2>/dev/null; then
+            print_warning "Found old framework references in .zshrc"
+            mkdir -p "$OLD_DOTFILES_BACKUP"
+            mv "$HOME/.zshrc" "$OLD_DOTFILES_BACKUP/.zshrc.old"
+            print_success "Moved old .zshrc to backup"
+            found_old=$((found_old + 1))
+        fi
+    fi
+    
+    # Summary
+    if [ $found_old -gt 0 ]; then
+        print_success "Disabled $found_old old dotfiles components"
+        print_info "Old files backed up to: $OLD_DOTFILES_BACKUP"
+        echo "$OLD_DOTFILES_BACKUP" > "$DOTFILES_DIR/.old-dotfiles-backup-location"
+    else
+        print_success "No old dotfiles detected"
+    fi
+}
+
 # Install core dependencies
 install_core_deps() {
     print_header "Installing Core Dependencies"
@@ -462,6 +578,7 @@ show_usage() {
     echo "  --shell         Install shell configs only"
     echo "  --tools         Install tool configs only"
     echo "  --no-backup     Skip backup of existing files"
+    echo "  --keep-old      Keep old dotfiles (don't disable them)"
     echo "  --uninstall     Remove dotfiles and restore backups"
     echo "  --help          Show this help message"
 }
@@ -472,6 +589,7 @@ main() {
     local install_all=true
     local shell_only=false
     local tools_only=false
+    local keep_old=false
     
     # Parse arguments
     while [[ $# -gt 0 ]]; do
@@ -494,6 +612,10 @@ main() {
                 do_backup=false
                 shift
                 ;;
+            --keep-old)
+                keep_old=true
+                shift
+                ;;
             --help)
                 show_usage
                 exit 0
@@ -511,6 +633,13 @@ main() {
     
     print_info "Detected distro: $(detect_distro)"
     print_info "Package manager: $(get_pkg_manager)"
+    
+    # Detect and disable old dotfiles FIRST (unless --keep-old)
+    if ! $keep_old; then
+        disable_old_dotfiles
+    else
+        print_warning "Skipping old dotfiles detection (--keep-old)"
+    fi
     
     # Backup existing configs
     if $do_backup; then
