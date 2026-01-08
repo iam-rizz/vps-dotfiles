@@ -70,6 +70,22 @@ cd ~/.dotfiles
 ./install.sh --all
 ```
 
+### Post-Installation (Optional)
+
+**Install Bat Catppuccin Theme:**
+```bash
+~/.dotfiles/scripts/install-bat-theme.sh
+```
+
+This will download and install Catppuccin themes for bat (latte, frappe, macchiato, mocha).
+
+**Install Neovim Plugins:**
+```bash
+nvim --headless "+Lazy! sync" +qa
+```
+
+This will install all Neovim plugins including Catppuccin theme, treesitter, lualine, etc.
+
 ### Options
 
 ```bash

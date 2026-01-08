@@ -18,6 +18,8 @@ else
     alias l='ls -lah'
 fi
 
+alias vim='nvim'
+
 # bat - Modern cat replacement
 if command -v batcat &> /dev/null; then
     alias cat='batcat'
