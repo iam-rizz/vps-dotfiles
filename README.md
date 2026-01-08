@@ -36,9 +36,13 @@ For best experience with all features (especially fastfetch):
 - **[fastfetch](https://github.com/fastfetch-cli/fastfetch)** system info display
   - Full config for default `fastfetch` command
   - Compact config for `ffc` alias (login screen style)
+- **[Yazi](https://github.com/sxyazi/yazi)** terminal file manager with Catppuccin Macchiato theme
+- **[Lazygit](https://github.com/jesseduffield/lazygit)** Git TUI with Catppuccin themes (default: Macchiato)
+- **[Lazydocker](https://github.com/jesseduffield/lazydocker)** Docker TUI with Catppuccin theme
+- **[Bat](https://github.com/sharkdp/bat)** modern cat with Catppuccin themes (default: Mocha)
 - **Neovim** with lazy.nvim and essential plugins
 - **tmux** with sensible keybindings
-- **Catppuccin Mocha** color scheme across all tools
+- **Catppuccin** color scheme across all tools
 - Security-focused with history filtering and secure permissions
 
 ## Requirements
@@ -95,11 +99,12 @@ cd ~/.dotfiles
 
 This will automatically:
 - Install all dependencies (zsh, git, curl, etc.)
-- Install optional tools (starship, btop, fastfetch, bat, lazygit, lazydocker, etc.)
+- Install optional tools (starship, btop, fastfetch, bat, etc.)
 - Install Zinit plugin manager
 - Create symlinks for all configs
 - Install bat Catppuccin themes
 - Install lazygit and lazydocker with themes
+- Install yazi file manager with Catppuccin theme
 - Install Neovim plugins
 - Set zsh as default shell
 - Disable default MOTD
@@ -136,6 +141,7 @@ After installation completes:
 - ✅ Bat Catppuccin themes
 - ✅ Lazygit and lazydocker binaries
 - ✅ Lazygit Catppuccin themes (default: Macchiato)
+- ✅ Yazi file manager with Catppuccin theme (default: Macchiato)
 - ✅ Neovim plugins
 
 No need to run separate installation scripts!
@@ -188,6 +194,7 @@ Options:
 - neovim - Text editor
 - lazygit - Git TUI (Terminal UI)
 - lazydocker - Docker TUI
+- yazi - Terminal file manager
 
 ## Key Commands
 
@@ -222,6 +229,12 @@ Options:
 | `lazygit_theme frappe` | Switch to Catppuccin Frappe (dark warm) |
 | `lazygit_theme macchiato` | Switch to Catppuccin Macchiato (dark cool, default) |
 | `lazygit_theme mocha` | Switch to Catppuccin Mocha (dark) |
+
+### File Manager
+| Alias | Command |
+|-------|---------|
+| `y` | `yazi` (terminal file manager) |
+| `fm` | `yazi` (file manager) |
 
 ### Git
 | Alias | Command |
@@ -306,6 +319,7 @@ cd ~/.dotfiles && git pull && ./scripts/link.sh
   - Compact: `~/.dotfiles/config/fastfetch/config-full.jsonc` (for `ffc` alias)
 - **Lazygit**: `~/.config/lazygit/config.yml`
 - **Lazydocker**: `~/.config/lazydocker/config.yml`
+- **Yazi**: `~/.config/yazi/theme.toml` (change `use = "macchiato"` to switch flavors)
 
 ## Credits
 

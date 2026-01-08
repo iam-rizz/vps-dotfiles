@@ -395,6 +395,22 @@ install_additional_tools() {
         print_warning "Failed to install lazy tools"
     fi
     
+    # Install yazi file manager
+    print_info "Installing yazi file manager..."
+    if bash "$DOTFILES_DIR/scripts/install-yazi.sh"; then
+        print_success "Yazi installed"
+        
+        # Install yazi theme
+        print_info "Installing yazi Catppuccin theme..."
+        if bash "$DOTFILES_DIR/scripts/install-yazi-theme.sh"; then
+            print_success "Yazi theme installed"
+        else
+            print_warning "Failed to install yazi theme"
+        fi
+    else
+        print_warning "Failed to install yazi"
+    fi
+    
     # Install Neovim plugins
     if cmd_exists nvim; then
         print_info "Installing Neovim plugins..."
@@ -544,6 +560,7 @@ main() {
     echo -e "  ✓ Bat with Catppuccin themes"
     echo -e "  ✓ Lazygit with Catppuccin themes (default: Macchiato)"
     echo -e "  ✓ Lazydocker with Catppuccin theme"
+    echo -e "  ✓ Yazi file manager with Catppuccin theme (default: Macchiato)"
     echo -e "  ✓ Neovim with plugins"
     echo -e "  ✓ Tmux, btop, fastfetch configs"
     echo ""
@@ -551,6 +568,7 @@ main() {
     echo -e "  ${YELLOW}dotfiles_help${NC}      - Show all custom commands"
     echo -e "  ${YELLOW}lg${NC}                 - Launch lazygit"
     echo -e "  ${YELLOW}lzd${NC}                - Launch lazydocker"
+    echo -e "  ${YELLOW}y${NC} or ${YELLOW}fm${NC}           - Launch yazi file manager"
     echo -e "  ${YELLOW}bat_theme${NC}          - Switch bat theme"
     echo -e "  ${YELLOW}lazygit_theme${NC}      - Switch lazygit theme"
     echo -e "  ${YELLOW}prompt_bold${NC}        - Switch to bold prompt"
