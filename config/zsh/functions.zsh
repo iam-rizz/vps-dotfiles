@@ -371,6 +371,62 @@ lazygit_theme() {
     fi
 }
 
+# Switch yazi theme
+yazi_theme() {
+    if [ -z "$1" ]; then
+        echo "Usage: yazi_theme <latte|frappe|macchiato|mocha>"
+        echo ""
+        
+        # Show current theme
+        local config_file="$HOME/.config/yazi/theme.toml"
+        if [ -f "$config_file" ]; then
+            local current=$(grep 'use = ' "$config_file" | grep -oP 'use = "\K[^"]+' | head -1)
+            if [ -n "$current" ]; then
+                echo "Current theme: $current"
+            fi
+        fi
+        
+        echo ""
+        echo "Available themes:"
+        echo "  latte      - Light theme"
+        echo "  frappe     - Dark theme (warm)"
+        echo "  macchiato  - Dark theme (cool, default)"
+        echo "  mocha      - Dark theme"
+        return 1
+    fi
+    
+    local theme_name
+    case "$1" in
+        latte|frappe|macchiato|mocha)
+            theme_name="$1"
+            ;;
+        *)
+            echo "Error: Unknown theme '$1'"
+            echo "Available: latte, frappe, macchiato, mocha"
+            return 1
+            ;;
+    esac
+    
+    # Check if theme exists
+    if [ ! -d "$HOME/.config/yazi/flavors/$theme_name.yazi" ]; then
+        echo "Error: Theme not found: $theme_name"
+        echo "Run: ~/.dotfiles/scripts/install-yazi-theme.sh"
+        return 1
+    fi
+    
+    # Update theme.toml
+    local config_file="$HOME/.config/yazi/theme.toml"
+    if [ -f "$config_file" ]; then
+        sed -i "s/use = \".*\"/use = \"$theme_name\"/" "$config_file"
+        echo "Switched to: $theme_name"
+        echo "Restart yazi to see changes"
+    else
+        echo "Error: theme.toml not found"
+        echo "Run: ~/.dotfiles/scripts/install-yazi-theme.sh"
+        return 1
+    fi
+}
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # Prompt Switching Functions
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -452,5 +508,6 @@ dotfiles_help() {
     echo "  prompt_minimal     - Switch to minimal prompt"
     echo "  bat_theme          - Switch bat color theme"
     echo "  lazygit_theme      - Switch lazygit color theme"
+    echo "  yazi_theme         - Switch yazi color theme"
     echo ""
 }

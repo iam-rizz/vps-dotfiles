@@ -65,18 +65,6 @@ EOF
 
 echo -e "${GREEN}✓ Theme configuration created${NC}"
 
-# Create init.lua if it doesn't exist
-if [ ! -f "$YAZI_CONFIG_DIR/init.lua" ]; then
-    cat > "$YAZI_CONFIG_DIR/init.lua" << 'EOF'
--- Yazi init.lua
--- VPS Dotfiles
-
--- Load Catppuccin flavor
-require("yazi"):setup()
-EOF
-    echo -e "${GREEN}✓ Created init.lua${NC}"
-fi
-
 echo
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo -e "${GREEN}✓ Catppuccin theme installed successfully!${NC}"

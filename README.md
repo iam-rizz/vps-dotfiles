@@ -230,6 +230,14 @@ Options:
 | `lazygit_theme macchiato` | Switch to Catppuccin Macchiato (dark cool, default) |
 | `lazygit_theme mocha` | Switch to Catppuccin Mocha (dark) |
 
+### Yazi Theme Switching
+| Command | Description |
+|---------|-------------|
+| `yazi_theme latte` | Switch to Catppuccin Latte (light) |
+| `yazi_theme frappe` | Switch to Catppuccin Frappe (dark warm) |
+| `yazi_theme macchiato` | Switch to Catppuccin Macchiato (dark cool, default) |
+| `yazi_theme mocha` | Switch to Catppuccin Mocha (dark) |
+
 ### File Manager
 | Alias | Command |
 |-------|---------|
@@ -285,6 +293,7 @@ Options:
 - `prompt_bold` / `prompt_minimal` - Switch between prompt modes
 - `bat_theme` - Switch bat color theme (latte/frappe/macchiato/mocha)
 - `lazygit_theme` - Switch lazygit color theme (latte/frappe/macchiato/mocha)
+- `yazi_theme` - Switch yazi color theme (latte/frappe/macchiato/mocha)
 
 ## Zinit Plugins
 
