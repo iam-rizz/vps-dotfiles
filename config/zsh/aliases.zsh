@@ -163,9 +163,9 @@ alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias week='date +%V'
 alias timestamp='date +%s'
 
-# Fastfetch full info
+# Fastfetch compact info
 if command -v fastfetch &> /dev/null; then
-    alias ff='fastfetch --config ~/.config/fastfetch/config-full.jsonc'
+    alias ffc='fastfetch --config ~/.config/fastfetch/config-full.jsonc'
 fi
 
 # Grep with color
