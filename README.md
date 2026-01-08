@@ -159,16 +159,45 @@ Options:
   --help          Show help message
 ```
 
-### Options
+## Uninstallation
+
+To remove dotfiles and restore your system:
 
 ```bash
-./install.sh [options]
+cd ~/.dotfiles
+
+# Preview what will be removed (dry run)
+./uninstall.sh --all --dry-run
+
+# Remove everything
+./uninstall.sh --all
+
+# Remove and restore backup
+./uninstall.sh --all --restore
+
+# Remove only configs (keep tools)
+./uninstall.sh --configs
+
+# Remove only themes
+./uninstall.sh --themes
+
+# Remove only tools (lazygit, lazydocker, yazi)
+./uninstall.sh --tools
+```
+
+### Uninstall Options
+
+```bash
+./uninstall.sh [options]
 
 Options:
-  --all           Install all components (recommended)
-  --shell         Install shell configs only
-  --tools         Install tool configs only
-  --no-backup     Skip backup of existing files
+  --all           Remove everything (configs, themes, tools)
+  --configs       Remove config symlinks only
+  --themes        Remove installed themes only
+  --tools         Remove installed tools (lazygit, lazydocker, yazi)
+  --restore       Restore from backup after uninstall
+  --keep-shell    Don't change default shell back to bash
+  --dry-run       Show what would be removed without removing
   --help          Show help message
 ```
 
